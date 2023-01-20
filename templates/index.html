@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2> 
+    Start Playing 
+  </h2>
+
+  <div class="container">
+    <button type="button" class="btn btn-secondary loginbtn btn-lg hover-d3 hover-border-theme" onclick="login()">
+      Login
+    </button>
+  </div>
+  
+  <script>
+    function login(){
+      window.open('/login');
+    }
+  </script>
+{% endblock %}
