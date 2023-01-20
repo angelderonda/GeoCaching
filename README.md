@@ -1,5 +1,6 @@
 # GeoCaching
 
+PASOS PARA INICIAR LA APLICACIÓN
 
 
 python -m venv env
