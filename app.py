@@ -209,11 +209,12 @@ def save_game():
 
 @app.route("/supervise_game", methods=["GET", "POST"])
 def supervise_game():
-    if request.method == "GET":
+    if request.method == "POST":
          # Obtiene el id del juego seleccionado
         game_id = request.form.get("game_id")
         # Obtén todos los juegos de la base de datos
-        return render_template("play_game.html", game = game_id, logged = True)
+        game , players, users = game_to_supervise(game_id)
+        return render_template("supervise_game.html", game = game, players = players, in_game = users , logged = True)
 
 
 
