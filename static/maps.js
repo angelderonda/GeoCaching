@@ -90,8 +90,14 @@ function addCache() {
     console.log("cachews");
     gameMap2.on('click', function (event) {
         if (cacheCount < 10) {
+            var cacheName = prompt("Please enter the cache name:", "");
+            while (cacheName == null){ var cacheName = prompt("Please enter the cache name:", "");}
+            var cacheHint = prompt("Please enter the hint:", "");
+            while (cacheName == null){ var cacheName = prompt("Please enter the hint:", "");}
             var cache = {
-                location: event.coordinate
+                location: event.coordinate,
+                name: cacheName,
+                hint: cacheHint,
             };
             var marker = new ol.Overlay({
                 position: cache.location,
@@ -99,6 +105,7 @@ function addCache() {
             });
             caches.push(cache);
             console.log(caches);
+            console.log(cacheName,cacheHint);
             console.log(ol.proj.toLonLat(cache.location));
             marker.getElement().style.width = '10px';
             marker.getElement().style.height = '10px';
@@ -132,9 +139,14 @@ function nextStep() {
                     position: cache.location,
                     element: document.createElement('div')
                 });
+                marker.getElement().style.width = '10px';
+                marker.getElement().style.height = '10px';
+                marker.getElement().style.borderRadius = '50%';
+                marker.getElement().style.backgroundColor = 'red';
                 marker.getElement().innerHTML = cache.name;
                 gameMap3.addOverlay(marker);
             });
+            fillCacheTable();
         }
     }
 }
@@ -161,3 +173,18 @@ function finishGame() {
             console.error('Error:', error);
         });
 }
+
+function fillCacheTable() {
+    let tableBody = document.getElementById("cache-table-body");
+    for (let i = 0; i < caches.length; i++) {
+      let cache = caches[i];
+      let row = document.createElement("tr");
+      let nameCell = document.createElement("td");
+      nameCell.innerHTML = cache.name;
+      let hintCell = document.createElement("td");
+      hintCell.innerHTML = cache.hint;
+      row.appendChild(nameCell);
+      row.appendChild(hintCell);
+      tableBody.appendChild(row);
+    }
+  }

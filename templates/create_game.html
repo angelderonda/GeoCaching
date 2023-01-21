@@ -22,14 +22,31 @@
         <label>Cache name:</label>
         <input type="text" id="cache-name">
       </div>
+      <div id="cache-hint">
+        <label>Cache Hint:</label>
+        <input type="text" id="cache-hint">
+      </div>
       <p id="cache-count">Caches added: <span id="cache-count-num"></span>/10</p>
       <button id="next-btn" onclick="nextStep()">Next</button>
     </div>
     <div id="step3" class="step" style="display: none;">
       <h3>Step 3: Review game</h3>
       <div id="map3" style="height: 400px;width: 400px;"></div>
-      <button id="finish-btn" onclick="finishGame()">Finish</button>
+      <table id="cache-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Hint</th>
+          </tr>
+        </thead>
+        <tbody id="cache-table-body"></tbody>
+      </table>
+      </div>
+      
     </div>
+    <div>
+         <button id="finish-btn" onclick="finishGame()">Finish</button>    
+        </div> 
   </div>
 
 </div>
