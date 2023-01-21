@@ -1,25 +1,38 @@
-var mapa = new ol.Map({
-  target: 'mapa',
-  layers: [
+var map = new ol.Map({
+    target: 'map',
+    layers: [
     new ol.layer.Tile({
-      source: new ol.source.OSM()
+    source: new ol.source.OSM()
     })
-  ],
-  view: new ol.View({
-    center: ol.proj.fromLonLat([2, 40]),
-    zoom: 4
-  })
+    ],
+    view: new ol.View({
+    center: ol.proj.fromLonLat([-4.4, 36.7]),
+    zoom: 6
+    })
 });
 
-function getCoordinates() {
-    var lat = document.getElementById("lat").value;
-    var lng = document.getElementById("lng").value;
-    var view = mapa.getView();
-    var center = ol.proj.fromLonLat([lng, lat]);
-    view.setCenter(center);
-    view.setZoom(16);
-    print(view);
+function goToCoordinates() {
+    var coordinates = document.getElementById('coordinates').value;
+    var lonlat = coordinates.split(',');
+    var lon = parseFloat(lonlat[0]);
+    var lat = parseFloat(lonlat[1]);
+    var view = map.getView();
+    view.animate({
+    center: ol.proj.fromLonLat([lon, lat]),
+    duration: 2000
+    });
 }
+
+function getCoordinates() {
+    var view = map.getView();
+    var center = view.getCenter();
+    var lonlat = ol.proj.toLonLat(center);
+    var lon = lonlat[0];
+    var lat = lonlat[1];
+    document.getElementById("coordinates-display").innerHTML = "Longitude: " + lon + ", Latitude: " + lat;
+    document.getElementById("coordinates-input").value = lon + "," + lat;
+}
+
 
 function goToPlace() {
     var inputPlace = document.getElementById("inputPlace").value;
@@ -30,7 +43,7 @@ function goToPlace() {
         .then(data => {
         var lat = data[0].lat;
         var lon = data[0].lon;
-        var view = mapa.getView();
+        var view = map.getView();
         var center = ol.proj.fromLonLat([lon, lat]);
         view.setCenter(center);
         view.setZoom(16);
@@ -44,7 +57,7 @@ function goToPlace() {
          lat: position.coords.latitude,
          lng: position.coords.longitude
         };
-        var view = mapa.getView();
+        var view = map.getView();
         var center = ol.proj.fromLonLat([pos.lng, pos.lat]);
         view.setCenter(center);
         view.setZoom(16);

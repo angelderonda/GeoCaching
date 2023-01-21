@@ -1,62 +1,84 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h3> 
+<h3>
     Games Overview
-  </h3>
+</h3>
 
-  <div id="accordion" class="accordion">
-      <div class="card">
-      <div class="card-header">
-          <a class="btn" data-bs-toggle="collapse" href="#collapseOne">
-          Ongoing Games
-          </a>
-      </div>
-      <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
-          <div class="card-body">
-              <table class="table" style="width:100%">
-                <thead>
-                  <tr>
-                    <th style="width:50%">Game</th>
-                    <th style="width:25%">Participate</th>
-                    <th style="width:25%">Supervise</th>
-                  </tr>
-                </thead>
-                <tbody id="active_user_games">
-                </tbody>
-              </table>
-          </div>
-      </div>
-      </div>
-      <div class="card">
-      <div class="card-header">
-          <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTwo">
-          Finished Games
-          </a>
-      </div>
-      <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
-          <div class="card-body">
-            <table class="table">
-              <thead>
+<div id="accordion" class="accordion">
+    <div class="card">
+    <div class="card-header">
+        <a class="btn" data-bs-toggle="collapse" href="#collapseOne">
+        Ongoing Games
+        </a>
+    </div>
+    <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
+        <div class="card-body">
+            <table class="table" style="width:100%">
+            <thead>
                 <tr>
-                  <th style="width:50%">Game</th>
-                  <th style="width:25%">Winner</th>
-                  <th style="width:25%">Supervise</th>
+                <th style="width:50%">Game</th>
+                <th style="width:25%">Participate</th>
+                <th style="width:25%">Supervise</th>
                 </tr>
-              </thead>
-              <tbody id="inactive_user_games">
-              </tbody>
+            </thead>
+            <tbody>
+                {% for game in gamesOn %}
+                <tr>
+                    <td>{{ game.name }}</td>
+                    <td>
+
+                        {% if game["participate"] == 'yes' %}
+                            <form method="post" action="{{url_for('play_game')}}">
+                                <input type="hidden" name="game_name" value="{{game.name}}">
+                                <input type="submit" value="Play">
+                            </form>   
+                        {% else %}
+                            <form method="post" action="{{url_for('join_game')}}">
+                                <input type="hidden" name="game_id" value="{{game._id}}">
+                                <input type="submit" value="Join">
+                            </form>    
+                        {% endif %}
+                       
+                    </td>
+                    <td>{{ game.supervise }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
             </table>
-          </div>
-      </div>
-      </div>
-  </div>
+        </div>
+    </div>
+    </div>
+    <div class="card">
+    <div class="card-header">
+        <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTwo">
+        Finished Games
+        </a>
+    </div>
+    <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
+        <div class="card-body">
+        <table class="table">
+            <thead>
+            <tr>
+                <th style="width:50%">Game</th>
+                <th style="width:25%">Winner</th>
+                <th style="width:25%">Supervise</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for game in gameOff %}
+                <tr>
+                    <td>{{ game.name }}</td>
+                    <td>{{ game.participate }}</td>
+                    <td>{{ game.supervise }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+    </div>
+</div>
 
-  <script src="/static/main.js">
-  </script>
 
-  <script>
-    loadframe("/active_user_games", "active_user_games");
-    loadframe("/inactive_user_games", "inactive_user_games");
-  </script>
 {% endblock %}

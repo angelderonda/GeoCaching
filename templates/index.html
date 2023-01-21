@@ -2,18 +2,17 @@
 
 {% block content %}
   <h2> 
-    Start Playing 
+   To start playing please login first 
   </h2>
 
   <div class="container">
-    <button type="button" class="btn btn-secondary loginbtn btn-lg hover-d3 hover-border-theme" onclick="login()">
-      Login
-    </button>
+    
   </div>
+
+  <form class="form-horizontal" method="post" action="{{ url_for('login') }}">
+			<button type="submit" class="btn btn-secondary loginbtn btn-lg hover-d3 hover-border-theme">
+        Login
+      </button>
+	</form>
   
-  <script>
-    function login(){
-      window.open('/login');
-    }
-  </script>
 {% endblock %}

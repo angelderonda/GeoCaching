@@ -1,73 +1,35 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h3> 
-    New Game Instance
-  </h3>
+  
 
-  <div class="container">
-    <div class="w3-row">
-      <a href="javascript:void(0)" onclick="openCreate(event, 'Game');">
-        <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">Game</div>
-      </a>
-      <a href="javascript:void(0)" onclick="openCreate(event, 'Caches');">
-        <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">Caches</div>
-      </a>
-      <a href="javascript:void(0)" onclick="openCreate(event, 'Review');">
-        <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">Review</div>
-      </a>
-    </div>
+  <h3> Create your game</h3>
 
-       <div id="Game" class="w3-container create" style="display:none">
-        <form class="form_game" action="api/create_game" method="post">
-          <div class="form_group">
-            <label class="control-label" for="name">Name</label>
-            <div>
-              <input class="game_input" type="text" name="name" min="3">
-            </div>
-          </div>
-        </div>
-        <div class="form_group">
-          <a>Area</a> 
-          <br>
-          <div id="mapa" class="mapa"></div>
-          <script src="/static/map.js"></script>
-          <br>
-          <div>
-            <label class="control-label" >Select area</label>
-            <button type="submit" name="area" onclick="getCoordinates()">Set area</button>
-          </div>
-        </div>
-      </form>
-    </div>
+  <div style="margin-left: 5%;">
 
-    <div id="Caches" class="w3-container create" style="display:none">
+    <div id="map" style="height: 400px;width: 400px;"></div>
+    <label>Go to coordinates: lat,lon</label>
+    <input type="text" id="coordinates">
+    <button onclick="goToCoordinates()">Go</button>    
+    
+    <form>
+      Navigate to somewhere: <input type="text" id="inputPlace">
+      <button type="button" onclick="goToPlace()">Navigate</button>
+    </form>
 
-    </div>
+    <button onclick="getCoordinates()">Set coordinates</button>
+    <p id="coordinates-display"></p>
+    <input type="hidden" id="coordinates-input" name="coordinates">
+    
 
-    <div id="Review" class="w3-container create" style="display:none">
 
-    </div>
 
-     <script>
-      function openCreate(evt, createType) {
-        var i, x, tablinks;
-        x = document.getElementsByClassName("create");
-        for (i = 0; i < x.length; i++) {
-          x[i].style.display = "none";
-        }
-        tablinks = document.getElementsByClassName("tablink");
-        for (i = 0; i < x.length; i++) {
-          tablinks[i].className = tablinks[i].className.replace(" w3-border-teal", "");
-        }
-        document.getElementById(createType).style.display = "block";
-        evt.currentTarget.firstElementChild.className += " w3-border-teal";
-      }
-      </script>
- 
-   <script>
-     function login(){
-       window.open('/login');
-     }
-   </script>
+
+
+  </div>
+  
+  
+
+
+  
  {% endblock %}
