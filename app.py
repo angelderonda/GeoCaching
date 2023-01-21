@@ -203,6 +203,7 @@ def save_game():
         'name': game.get("name"),   
         'location': game.get("location"),
         'caches':  game.get("caches"),
+        'zoom': game.get("zoom"),
         'owner':session['google_id'],
         'state': True, 
     })

@@ -6,8 +6,8 @@
 <div style="margin-left: 5%;">
     <div id="game-creator">
       <div id="step1" class="step">
-        <h3>Game:{{ game.name}} {{ game.location}} </h3>
-        <script>var center = '{{ game.location}}'; var caches_list ='{{ game.caches}}' </script>
+        <h3>Game:{{ game.name}}</h3>
+        <script>var center = '{{ game.location}}';var zoom = '{{game.zoom}}' ;var caches_list ='{{ game.caches|tojson}}' </script>
         <div id="map_view" style="height: 400px;width: 400px;"></div>
       </div>
     </div>

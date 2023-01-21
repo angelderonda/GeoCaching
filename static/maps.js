@@ -146,7 +146,8 @@ function finishGame() {
     var game = {
         name: gameName,
         location: gameLocation,
-        caches: caches
+        caches: caches,
+        zoom: zoom
     };
     fetch('/save_game', {
         method: 'POST',
