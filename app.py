@@ -158,6 +158,8 @@ def join_game():
         # Agrega el id del usuario actual a la lista de jugadores del juego seleccionado        
         user=dict(client["users"].find_one(filter={"google_id":session["google_id"]}))
         client["user_games"].insert_one({"user":user["google_id"], "game":game_id})
+        #client["user_games"].insert_one({"user":user["google_id"], "game":game_id, "caches":[]})
+
         return redirect("/join_game")
 
 
