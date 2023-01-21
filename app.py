@@ -173,7 +173,8 @@ def play_game():
         localizacion = game["location"]
         cachesGame = game["caches"]
         cachesFound =  (client["user_games"].find_one(filter={"user":session["google_id"],"game":id}))["caches"]
-        
+        print(cachesGame)
+        print(cachesFound)
         return render_template("play_game.html", game_id = id, localizacion = localizacion, cachesGame = cachesGame, cachesFound = cachesFound, logged = True)
 
 
@@ -226,8 +227,8 @@ def upload_image():
 
     # Obtener los datos del juego del usuario actual
     google_id = session["google_id"]
-    game_data = dict(client["games"].find_one(filter={"_id":ObjectId(game_id)}))
-    user_caches = dict(client["user_games"].find_one(filter={"user": google_id, "game": game_id}))
+    game_data = client["games"].find_one(filter={"_id":ObjectId(game_id)})
+    user_caches = client["user_games"].find_one(filter={"user": google_id, "game": game_id})
 
     print(game_data["caches"])
 

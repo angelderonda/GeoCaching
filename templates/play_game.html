@@ -14,14 +14,16 @@
          <tbody>           
             {% for cache in cachesGame %}
             <tr>
-               {% if cache in cachesFound %}
-               <td><s>{{cache.hint}}</s></td>
-               {% else %}
-               <td>{{cache.hint}}</td>
-               {% endif %}
+                {% for found_cache in cachesFound %}
+                    {% if found_cache.name == cache.hint %}
+                        <td><s>{{cache.hint}}</s></td>
+                    {% else %}
+                        <td>{{cache.hint}}</td>
+                    {% endif %}
+                {% endfor %}
             </tr>
             {% endfor %}
-         </tbody>
+        </tbody>
       </table>
    </div>
    <div class="col-md-4">
