@@ -207,6 +207,13 @@ def save_game():
     return jsonify({"status": "success", "message": "Juego guardado"})
 
 
+@app.route("/supervise_game", methods=["GET", "POST"])
+def supervise_game():
+    if request.method == "GET":
+         # Obtiene el id del juego seleccionado
+        game_id = request.form.get("game_id")
+        # Obtén todos los juegos de la base de datos
+        return render_template("play_game.html", game = game_id, logged = True)
 
 
 

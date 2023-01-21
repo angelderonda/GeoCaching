@@ -41,7 +41,16 @@
                         {% endif %}
                        
                     </td>
-                    <td>{{ game.supervise }}</td>
+                    <td>
+                        {% if game["supervise"] == 'yes' %}
+                        <form method="get" action="{{url_for('supervise_game')}}">
+                            <input type="hidden" name="game_id" value="{{game._id}}">
+                            <input type="submit" value="Supervise">
+                        </form>
+
+                        {% endif %}
+
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
