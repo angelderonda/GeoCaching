@@ -169,11 +169,11 @@ def play_game():
         id = request.form.get("game_id")
         game = dict(client["games"].find_one(filter={"_id":ObjectId(id)}))
 
-        location = game["location"]
+        localizacion = game["location"]
         cachesGame = game["caches"]
         cachesFound =  (client["user_games"].find_one(filter={"user":session["google_id"],"game":id}))["caches"]
         
-        return render_template("play_game.html", location = location, cachesGame = cachesGame, cachesFound = cachesFound, logged = True)
+        return render_template("play_game.html", localizacion = localizacion, cachesGame = cachesGame, cachesFound = cachesFound, logged = True)
 
 
 @app.route("/create_game", methods=["GET"])

@@ -5,7 +5,7 @@ var mapaJuego;
 
 playMap();
 
-function playMap(location) {
+function playMap() {
     mapaJuego = new ol.Map({
         target: 'mapaJuego',
         layers: [
@@ -14,9 +14,11 @@ function playMap(location) {
             })
         ],
         view: new ol.View({
-            center: ol.proj.fromLonLat(location),
+            center: JSON.parse(localizacion),
             zoom: 10
         })
 
     });
 }
+
+
