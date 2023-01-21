@@ -9,6 +9,7 @@ import os
 import pathlib
 from mongoengine import connect
 from mongoengine import StringField, DictField, ListField
+from tkinter import messagebox
 import json
 
 
@@ -173,7 +174,7 @@ def play_game():
         cachesGame = game["caches"]
         cachesFound =  (client["user_games"].find_one(filter={"user":session["google_id"],"game":id}))["caches"]
         
-        return render_template("play_game.html", localizacion = localizacion, cachesGame = cachesGame, cachesFound = cachesFound, logged = True)
+        return render_template("play_game.html", game_id = id, localizacion = localizacion, cachesGame = cachesGame, cachesFound = cachesFound, logged = True)
 
 
 @app.route("/create_game", methods=["GET"])
@@ -207,7 +208,50 @@ def save_game():
     return jsonify({"status": "success", "message": "Juego guardado"})
 
 
+@app.route('/upload-image', methods=['POST'])
+def upload_image():
+    cache_image = request.files.get('cache-image')
+    cache_name = request.form.get('cache-name')
+    game_id = request.form.get('game_id')
 
+    # Obtener la ruta de la imagen
+    image_path = "images/"
+    os.chmod(image_path, 0o777)
+
+
+    # Guardar la imagen en el servidor
+    #cache_image.save(image_path)
+
+    
+
+    # Obtener los datos del juego del usuario actual
+    google_id = session["google_id"]
+    game_data = dict(client["games"].find_one(filter={"_id":ObjectId(game_id)}))
+    user_caches = dict(client["user_games"].find_one(filter={"user": google_id, "game": game_id}))
+
+    print(game_data["caches"])
+
+    for cache in game_data["caches"]:
+        print(cache["name"] , "///",cache_name)
+        if(cache["name"] == cache_name):  
+            # Crear un nuevo cache
+            new_cache = {
+                "name": cache_name,
+                "image_path": image_path #CUIDADO
+            }
+
+            # Añadir el nuevo cache a la lista de caches del juego
+            user_caches["caches"].append(new_cache)
+
+            # Actualizar la información del juego en la base de datos
+            client["user_games"].update_one(
+                filter={"user": google_id, "game": game_id},
+                update={"$set": {"caches": user_caches["caches"]}}
+            )
+            return redirect("/join_game") #CAMBIAR ESTO       
+        else: 
+            #messagebox.showwarning("Advertencia", "El cache no es correcto")
+            return redirect("/join_game") #CAMBIAR ESTO       
 
 
 if __name__ == "__main__":

@@ -11,10 +11,14 @@
                <th style="width:50%">Hint</th>
             </tr>
          </thead>
-         <tbody>
+         <tbody>           
             {% for cache in cachesGame %}
             <tr>
+               {% if cache in cachesFound %}
+               <td><s>{{cache.hint}}</s></td>
+               {% else %}
                <td>{{cache.hint}}</td>
+               {% endif %}
             </tr>
             {% endfor %}
          </tbody>
@@ -28,6 +32,7 @@
             <br>
             <label for="cache-image">Upload Cache Image:</label>
             <input type="file" id="cache-image" name="cache-image">
+            <input type="hidden" name="game_id" value="{{game_id}}">
             <br>
             <input type="submit" value="Upload">
          </form>
