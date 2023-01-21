@@ -92,7 +92,7 @@ function addCache() {
             var cacheHint = prompt("Please enter the hint:", "");
             while (cacheName == null) { var cacheName = prompt("Please enter the hint:", ""); }
             var cache = {
-                location: event.coordinate,
+                location: ol.proj.toLonLat(event.coordinate),
                 name: cacheName,
                 hint: cacheHint,
             };
@@ -145,7 +145,7 @@ function finishGame() {
     var gameName = document.getElementById('game-name').value;
     var game = {
         name: gameName,
-        location: gameLocation,
+        location: ol.proj.toLonLat(gameLocation),
         caches: caches
     };
     fetch('/save_game', {
@@ -180,3 +180,6 @@ function fillCacheTable() {
         tableBody.appendChild(row);
     }
 }
+
+
+

@@ -9,6 +9,7 @@ import os
 import pathlib
 from mongoengine import connect
 from mongoengine import StringField, DictField, ListField
+import json
 
 
 from functions import *
@@ -121,8 +122,8 @@ def logout():
 @app.route("/callback")
 def callback():
     flow.fetch_token(authorization_response=request.url) # Trades the recieved info for an access token to the api
-    if not session["state"] == request.args["state"]: # Cecks if recieved state is the same as the state of the session
-        abort(500) 
+    #<if not session["state"] == request.args["state"]: # Cecks if recieved state is the same as the state of the session
+    #    abort(500) 
     credentials = flow.credentials # Safes credentials if successfull
     request_session = requests.session()
     cached_session = cachecontrol.CacheControl(request_session)
@@ -157,22 +158,22 @@ def join_game():
             return redirect("/login")
         # Agrega el id del usuario actual a la lista de jugadores del juego seleccionado        
         user=dict(client["users"].find_one(filter={"google_id":session["google_id"]}))
-        client["user_games"].insert_one({"user":user["google_id"], "game":game_id})
+        client["user_games"].insert_one({"user": user["google_id"], "game": game_id, "caches": []})
         #client["user_games"].insert_one({"user":user["google_id"], "game":game_id, "caches":[]})
 
         return redirect("/join_game")
 
 
-@app.route("/play_game", methods=["GET", "POST"])
-def play_game():
-    if request.method == "GET":
-         # Obtiene el id del juego seleccionado
-        game_id = request.form.get("game_id")
-        # Obtén todos los juegos de la base de datos
-        return render_template("play_game.html", game = game_id, logged = True)
-    else:   
-        name = request.form.get("game_name")
-        return render_template("play_game.html", game = name, logged = True)
+@app.route("/play_game", methods=["POST"])
+def play_game():             
+        id = request.form.get("game_id")
+        game = dict(client["games"].find_one(filter={"_id":ObjectId(id)}))
+
+        location = game["location"]
+        cachesGame = game["caches"]
+        cachesFound =  (client["user_games"].find_one(filter={"user":session["google_id"],"game":id}))["caches"]
+        
+        return render_template("play_game.html", location = location, cachesGame = cachesGame, cachesFound = cachesFound, logged = True)
 
 
 @app.route("/create_game", methods=["GET"])
@@ -180,7 +181,6 @@ def create_game():
     if request.method == "GET":   
         return render_template("create_game.html", logged = True)
     else:   
-        print("PASO")
         coordinates = request.form["coordinates-input"]
         # Procesar las coordenadas
         lonlat = coordinates.split(',')
