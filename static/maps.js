@@ -1,69 +1,154 @@
-var map = new ol.Map({
-    target: 'map',
-    layers: [
-    new ol.layer.Tile({
-    source: new ol.source.OSM()
-    })
-    ],
-    view: new ol.View({
-    center: ol.proj.fromLonLat([-4.4, 36.7]),
-    zoom: 6
-    })
-});
+var gameMap;
+var gameMap2;
+var gameMap3;
+var gameLocation;
+var caches = [];
+var cacheCount = 0;
 
-function goToCoordinates() {
-    var coordinates = document.getElementById('coordinates').value;
-    var lonlat = coordinates.split(',');
-    var lon = parseFloat(lonlat[0]);
-    var lat = parseFloat(lonlat[1]);
-    var view = map.getView();
-    view.animate({
-    center: ol.proj.fromLonLat([lon, lat]),
-    duration: 2000
+
+
+initMap();
+setGameLocation();
+
+
+
+
+function initMap() {
+    gameMap = new ol.Map({
+        target: 'map',
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.OSM()
+            })
+        ],
+        view: new ol.View({
+            center: ol.proj.fromLonLat([-4.4, 36.7]),
+            zoom: 10
+        })
     });
 }
 
-function getCoordinates() {
-    var view = map.getView();
-    var center = view.getCenter();
-    var lonlat = ol.proj.toLonLat(center);
-    var lon = lonlat[0];
-    var lat = lonlat[1];
-    document.getElementById("coordinates-display").innerHTML = "Longitude: " + lon + ", Latitude: " + lat;
-    document.getElementById("coordinates-input").value = lon + "," + lat;
+
+function initMap2() {
+    gameMap2 = new ol.Map({
+        target: 'map2',
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.OSM()
+            })
+        ],
+        view: new ol.View({
+            center: ol.proj.fromLonLat([-4.4, 36.7]),
+            zoom: 6
+        })
+    });
+}
+
+function initMap3() {
+    gameMap3 = new ol.Map({
+        target: 'map3',
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.OSM()
+            })
+        ],
+        view: new ol.View({
+            center: ol.proj.fromLonLat([-4.4, 36.7]),
+            zoom: 6
+        })
+    });
+}
+
+function setGameLocation() {
+    var marker;
+    gameMap.on('click', function (event) {
+        gameLocation = event.coordinate;
+        if (marker) {
+            gameMap.removeOverlay(marker);
+        }
+        marker = new ol.Overlay({
+            position: gameLocation,
+            element: document.createElement('div')
+        });
+        marker.getElement().style.width = '10px';
+        marker.getElement().style.height = '10px';
+        marker.getElement().style.borderRadius = '50%';
+        marker.getElement().style.backgroundColor = 'red';
+        gameMap.addOverlay(marker);
+        alert("Game location set at: " + ol.proj.toLonLat(gameLocation));
+    });
 }
 
 
-function goToPlace() {
-    var inputPlace = document.getElementById("inputPlace").value;
-    var url = 'https://nominatim.openstreetmap.org/search?q=' + inputPlace + '&format=json&limit=1';
 
-    fetch(url)
+function addCache() {
+    gameMap2.on('click', function (event) {
+        if (cacheCount < 10) {
+            print(event.coordinate)
+            var cache = {
+                location: event.coordinate
+            };
+            caches.push(cache);
+            var marker = new ol.Overlay({
+                position: cache.location,
+                element: document.createElement('div')
+            });
+            marker.getElement().style.width = '10px';
+            marker.getElement().style.height = '10px';
+            marker.getElement().style.borderRadius = '50%';
+            marker.getElement().style.backgroundColor = 'red';
+            gameMap2.addOverlay(marker);
+            cacheCount++;
+            document.getElementById('cache-count-num').innerHTML = cacheCount;
+        }
+    });
+    print(caches);
+}
+
+
+function nextStep() {
+    var currentStep = document.querySelector('.step:not([style*="display: none"])');
+    var nextStep = currentStep.nextElementSibling;
+    console.log("pasa");
+    if (nextStep) {
+        currentStep.style.display = 'none';
+        nextStep.style.display = 'block';
+        if (nextStep.id === 'step2') {
+            initMap2();
+            gameMap2.getView().setCenter(gameLocation);
+        } else if (nextStep.id === 'step3') {
+            initMap3();
+            caches.forEach(function (cache) {
+                var marker = new ol.Overlay({
+                    position: cache.location,
+                    element: document.createElement('div')
+                });
+                marker.getElement().innerHTML = cache.name;
+                gameMap3.addOverlay(marker);
+            });
+        }
+    }
+}
+
+function finishGame() {
+    var gameName = document.getElementById('game-name').value;
+    var game = {
+        name: gameName,
+        location: gameLocation,
+        caches: caches
+    };
+    fetch('/game', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(game)
+    })
         .then(response => response.json())
         .then(data => {
-        var lat = data[0].lat;
-        var lon = data[0].lon;
-        var view = map.getView();
-        var center = ol.proj.fromLonLat([lon, lat]);
-        view.setCenter(center);
-        view.setZoom(16);
+            console.log('Success:', data);
         })
-        .catch(error => console.log(error));
-    }
-
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-        var pos = {
-         lat: position.coords.latitude,
-         lng: position.coords.longitude
-        };
-        var view = map.getView();
-        var center = ol.proj.fromLonLat([pos.lng, pos.lat]);
-        view.setCenter(center);
-        view.setZoom(16);
-        }, function() {
-        handleLocationError(true, infoWindow, map.getCenter());
+        .catch((error) => {
+            console.error('Error:', error);
         });
-    } else {
-        handleLocationError(false, infoWindow, map.getCenter());
-    }
+}

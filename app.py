@@ -95,6 +95,8 @@ def login_is_required(function):
 # Interface & Functions 
 #########################
 
+
+
 # App homepage
 @app.route("/")
 def index():
@@ -146,7 +148,7 @@ def callback():
 def join_game():
     if request.method == "GET":
         # Obtén todos los juegos de la base de datos
-        return render_template("game_overview.html", gamesOn=user_games(True), gamesOff=user_games(False))
+        return render_template("game_overview.html", gamesOn=user_games(True), gamesOff=user_games(False), logged = True)
     else:
         # Obtiene el id del juego seleccionado
         game_id = request.form.get("game_id")
@@ -165,17 +167,17 @@ def play_game():
          # Obtiene el id del juego seleccionado
         game_id = request.form.get("game_id")
         # Obtén todos los juegos de la base de datos
-        return render_template("play_game.html", game = game_id)
+        return render_template("play_game.html", game = game_id, logged = True)
     else:   
         name = request.form.get("game_name")
         print(name)
-        return render_template("play_game.html", game = name)
+        return render_template("play_game.html", game = name, logged = True)
 
 
 @app.route("/create_game", methods=["GET", "POST"])
 def create_game():     
     if request.method == "GET":   
-        return render_template("create_game.html")
+        return render_template("create_game.html", logged = True)
     else:   
         coordinates = request.form["coordinates-input"]
         # Procesar las coordenadas
@@ -189,7 +191,7 @@ def create_game():
         # Mostrar un mensaje de éxito
         mensaje = "Coordenadas guardadas exitosamente!"
         #return render_template("create_game.html", mensaje=mensaje)
-        return render_template("play_game.html")
+        return render_template("play_game.html", logged = True)
 
 
 

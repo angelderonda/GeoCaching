@@ -1,35 +1,36 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  
-
-  <h3> Create your game</h3>
-
-  <div style="margin-left: 5%;">
-
-    <div id="map" style="height: 400px;width: 400px;"></div>
-    <label>Go to coordinates: lat,lon</label>
-    <input type="text" id="coordinates">
-    <button onclick="goToCoordinates()">Go</button>    
-    
-    <form>
-      Navigate to somewhere: <input type="text" id="inputPlace">
-      <button type="button" onclick="goToPlace()">Navigate</button>
-    </form>
-
-    <button onclick="getCoordinates()">Set coordinates</button>
-    <p id="coordinates-display"></p>
-    <input type="hidden" id="coordinates-input" name="coordinates">
-    
 
 
+<h3> Create your game</h3>
 
+<div style="margin-left: 5%;">
 
-
+  <div id="game-creator">
+    <div id="step1" class="step">
+      <h3>Step 1: Set game location and name</h3>
+      <div id="map" style="height: 400px;width: 400px;"></div>
+      <label>Game name:</label>
+      <input type="text" id="game-name">
+      <button id="next-btn" onclick="nextStep()">Next</button>
+    </div>
+    <div id="step2" class="step" style="display: none;">
+      <h3>Step 2: Add caches</h3>
+      <div id="map2" style="height: 400px;width: 400px;"></div>
+      <div id="cache-info">
+        <label>Cache name:</label>
+        <input type="text" id="cache-name">
+      </div>
+      <p id="cache-count">Caches added: <span id="cache-count-num"></span>/10</p>
+      <button id="next-btn" onclick="nextStep()">Next</button>
+    </div>
+    <div id="step3" class="step" style="display: none;">
+      <h3>Step 3: Review game</h3>
+      <div id="map3" style="height: 400px;width: 400px;"></div>
+      <button id="finish-btn" onclick="finishGame()">Finish</button>
+    </div>
   </div>
-  
-  
 
-
-  
- {% endblock %}
+</div>
+{% endblock %}
