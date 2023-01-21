@@ -2,7 +2,8 @@ var gameMap;
 var gameMap2;
 var gameMap3;
 var gameLocation;
-var caches = [];
+var zoom;
+let caches = [];
 var cacheCount = 0;
 
 
@@ -38,8 +39,8 @@ function initMap2() {
             })
         ],
         view: new ol.View({
-            center: ol.proj.fromLonLat([-4.4, 36.7]),
-            zoom: 6
+            center: ol.proj.fromLonLat(ol.proj.toLonLat(gameLocation)),
+            zoom: zoom
         })
     });
 }
@@ -63,6 +64,7 @@ function setGameLocation() {
     var marker;
     gameMap.on('click', function (event) {
         gameLocation = event.coordinate;
+        zoom = gameMap.getView().getZoom();
         if (marker) {
             gameMap.removeOverlay(marker);
         }
@@ -75,24 +77,29 @@ function setGameLocation() {
         marker.getElement().style.borderRadius = '50%';
         marker.getElement().style.backgroundColor = 'red';
         gameMap.addOverlay(marker);
-        alert("Game location set at: " + ol.proj.toLonLat(gameLocation));
+        alert("Game location set at: " + ol.proj.toLonLat(gameLocation)+"zoom:"+zoom);
+        console.log(ol.proj.toLonLat(gameLocation));
+        console.log(zoom);
     });
+    
 }
 
 
 
 function addCache() {
+    console.log("cachews");
     gameMap2.on('click', function (event) {
         if (cacheCount < 10) {
-            print(event.coordinate)
             var cache = {
                 location: event.coordinate
             };
-            caches.push(cache);
             var marker = new ol.Overlay({
                 position: cache.location,
                 element: document.createElement('div')
             });
+            caches.push(cache);
+            console.log(caches);
+            console.log(ol.proj.toLonLat(cache.location));
             marker.getElement().style.width = '10px';
             marker.getElement().style.height = '10px';
             marker.getElement().style.borderRadius = '50%';
@@ -102,7 +109,6 @@ function addCache() {
             document.getElementById('cache-count-num').innerHTML = cacheCount;
         }
     });
-    print(caches);
 }
 
 
@@ -110,14 +116,17 @@ function nextStep() {
     var currentStep = document.querySelector('.step:not([style*="display: none"])');
     var nextStep = currentStep.nextElementSibling;
     console.log("pasa");
+    console.log(caches)
     if (nextStep) {
         currentStep.style.display = 'none';
         nextStep.style.display = 'block';
         if (nextStep.id === 'step2') {
+            console.log(ol.proj.toLonLat(gameLocation));
             initMap2();
-            gameMap2.getView().setCenter(gameLocation);
+            addCache();
         } else if (nextStep.id === 'step3') {
             initMap3();
+            console.log(caches)
             caches.forEach(function (cache) {
                 var marker = new ol.Overlay({
                     position: cache.location,
