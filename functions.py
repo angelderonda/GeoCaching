@@ -33,9 +33,8 @@ def game_to_supervise(game_id):
     game = client["games"].find_one(filter={"_id":ObjectId(game_id)})
     users=list(client["user_games"].find(filter={"game":game_id}))
 
-
-
     #caches_count = games.find_one({'name': game_name}, {"$size": "$caches"})
+    #caches_size = len(game["caches"])
 
     
 

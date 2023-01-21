@@ -1,16 +1,29 @@
 var gameMap;
 
-
+initMap()
 drawMap();
 
 
-function drawMap() {
-    console.log(caches_list);
-
-
-    caches_list.forEach(function(cache) {
-        console.log(cache.location);
+function initMap() {
+    console.log(center)
+    gameMap = new ol.Map({
+        target: 'map_view',
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.OSM()
+            })
+        ],
+        view: new ol.View({
+            center: center,
+            zoom: 10
+        })
     });
+}
+
+
+function drawMap() {
+    
+
 
 }
 
