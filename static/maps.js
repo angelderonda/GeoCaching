@@ -77,23 +77,20 @@ function setGameLocation() {
         marker.getElement().style.borderRadius = '50%';
         marker.getElement().style.backgroundColor = 'red';
         gameMap.addOverlay(marker);
-        alert("Game location set at: " + ol.proj.toLonLat(gameLocation)+"zoom:"+zoom);
-        console.log(ol.proj.toLonLat(gameLocation));
-        console.log(zoom);
+        alert("Game location set at: " + ol.proj.toLonLat(gameLocation) + "zoom:" + zoom);
     });
-    
+
 }
 
 
 
 function addCache() {
-    console.log("cachews");
     gameMap2.on('click', function (event) {
         if (cacheCount < 10) {
             var cacheName = prompt("Please enter the cache name:", "");
-            while (cacheName == null){ var cacheName = prompt("Please enter the cache name:", "");}
+            while (cacheName == null) { var cacheName = prompt("Please enter the cache name:", ""); }
             var cacheHint = prompt("Please enter the hint:", "");
-            while (cacheName == null){ var cacheName = prompt("Please enter the hint:", "");}
+            while (cacheName == null) { var cacheName = prompt("Please enter the hint:", ""); }
             var cache = {
                 location: event.coordinate,
                 name: cacheName,
@@ -104,9 +101,6 @@ function addCache() {
                 element: document.createElement('div')
             });
             caches.push(cache);
-            console.log(caches);
-            console.log(cacheName,cacheHint);
-            console.log(ol.proj.toLonLat(cache.location));
             marker.getElement().style.width = '10px';
             marker.getElement().style.height = '10px';
             marker.getElement().style.borderRadius = '50%';
@@ -122,18 +116,14 @@ function addCache() {
 function nextStep() {
     var currentStep = document.querySelector('.step:not([style*="display: none"])');
     var nextStep = currentStep.nextElementSibling;
-    console.log("pasa");
-    console.log(caches)
     if (nextStep) {
         currentStep.style.display = 'none';
         nextStep.style.display = 'block';
         if (nextStep.id === 'step2') {
-            console.log(ol.proj.toLonLat(gameLocation));
             initMap2();
             addCache();
         } else if (nextStep.id === 'step3') {
             initMap3();
-            console.log(caches)
             caches.forEach(function (cache) {
                 var marker = new ol.Overlay({
                     position: cache.location,
@@ -158,7 +148,7 @@ function finishGame() {
         location: gameLocation,
         caches: caches
     };
-    fetch('/game', {
+    fetch('/save_game', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -168,6 +158,8 @@ function finishGame() {
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
+            alert("Juego creado con éxito");
+            window.location.href = '/join_game';
         })
         .catch((error) => {
             console.error('Error:', error);
@@ -177,14 +169,14 @@ function finishGame() {
 function fillCacheTable() {
     let tableBody = document.getElementById("cache-table-body");
     for (let i = 0; i < caches.length; i++) {
-      let cache = caches[i];
-      let row = document.createElement("tr");
-      let nameCell = document.createElement("td");
-      nameCell.innerHTML = cache.name;
-      let hintCell = document.createElement("td");
-      hintCell.innerHTML = cache.hint;
-      row.appendChild(nameCell);
-      row.appendChild(hintCell);
-      tableBody.appendChild(row);
+        let cache = caches[i];
+        let row = document.createElement("tr");
+        let nameCell = document.createElement("td");
+        nameCell.innerHTML = cache.name;
+        let hintCell = document.createElement("td");
+        hintCell.innerHTML = cache.hint;
+        row.appendChild(nameCell);
+        row.appendChild(hintCell);
+        tableBody.appendChild(row);
     }
-  }
+}

@@ -1,4 +1,4 @@
-from flask import Flask, session, abort, redirect, request, send_from_directory, render_template, url_for
+from flask import Flask, session, abort, redirect, request, send_from_directory, render_template, url_for, jsonify
 from flask_pymongo import PyMongo, MongoClient
 import requests
 from google.oauth2 import id_token
@@ -170,28 +170,40 @@ def play_game():
         return render_template("play_game.html", game = game_id, logged = True)
     else:   
         name = request.form.get("game_name")
-        print(name)
         return render_template("play_game.html", game = name, logged = True)
 
 
-@app.route("/create_game", methods=["GET", "POST"])
+@app.route("/create_game", methods=["GET"])
 def create_game():     
     if request.method == "GET":   
         return render_template("create_game.html", logged = True)
     else:   
+        print("PASO")
         coordinates = request.form["coordinates-input"]
         # Procesar las coordenadas
         lonlat = coordinates.split(',')
         lon = float(lonlat[0])
         lat = float(lonlat[1])
-        print(lat)
-        print(lon)
         # Hacer algo con las coordenadas, como guardarlas en la base de datos
         # ...
         # Mostrar un mensaje de éxito
         mensaje = "Coordenadas guardadas exitosamente!"
         #return render_template("create_game.html", mensaje=mensaje)
         return render_template("play_game.html", logged = True)
+
+
+@app.route("/save_game", methods=["POST"])
+def save_game():
+    game = request.json
+    client['games'].insert_one({
+        'name': game.get("name"),   
+        'location': game.get("location"),
+        'caches':  game.get("caches"),
+        'owner':session['google_id'],
+        'state': True, 
+    })
+    return jsonify({"status": "success", "message": "Juego guardado"})
+
 
 
 
