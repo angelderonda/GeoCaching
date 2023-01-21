@@ -209,6 +209,16 @@ def save_game():
     return jsonify({"status": "success", "message": "Juego guardado"})
 
 
+
+@app.route("/supervise_game", methods=["GET", "POST"])
+def supervise_game():
+    if request.method == "POST":
+         # Obtiene el id del juego seleccionado
+        game_id = request.form.get("game_id")
+        # Obtén todos los juegos de la base de datos
+        game , players, users = game_to_supervise(game_id)
+        return render_template("supervise_game.html", game = game, players = players, in_game = users , logged = True)
+
 @app.route('/upload-image', methods=['POST'])
 def upload_image():
     cache_image = request.files.get('cache-image')

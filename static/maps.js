@@ -55,7 +55,7 @@ function initMap3() {
         ],
         view: new ol.View({
             center: ol.proj.fromLonLat(gameLocation),
-            zoom: 6
+            zoom: zoom
         })
     });
 }
@@ -63,13 +63,13 @@ function initMap3() {
 function setGameLocation() {
     var marker;
     gameMap.on('click', function (event) {
-        gameLocation = event.coordinate;
+        gameLocation = ol.proj.toLonLat(event.coordinate);
         zoom = gameMap.getView().getZoom();
         if (marker) {
             gameMap.removeOverlay(marker);
         }
         marker = new ol.Overlay({
-            position: gameLocation,
+            position: event.coordinate,
             element: document.createElement('div')
         });
         marker.getElement().style.width = '10px';
@@ -77,7 +77,7 @@ function setGameLocation() {
         marker.getElement().style.borderRadius = '50%';
         marker.getElement().style.backgroundColor = 'red';
         gameMap.addOverlay(marker);
-        alert("Game location set at: " + ol.proj.toLonLat(gameLocation) + "zoom:" + zoom);
+        alert("Game location set at: " + gameLocation + "zoom:" + zoom);
     });
 
 }
@@ -92,7 +92,7 @@ function addCache() {
             var cacheHint = prompt("Please enter the hint:", "");
             while (cacheName == null) { var cacheName = prompt("Please enter the hint:", ""); }
             var cache = {
-                location: ol.proj.toLonLat(event.coordinate),
+                location: event.coordinate,
                 name: cacheName,
                 hint: cacheHint,
             };
@@ -145,7 +145,7 @@ function finishGame() {
     var gameName = document.getElementById('game-name').value;
     var game = {
         name: gameName,
-        location: ol.proj.toLonLat(gameLocation),
+        location: gameLocation,
         caches: caches
     };
     fetch('/save_game', {
