@@ -167,16 +167,25 @@ def join_game():
 
 @app.route("/play_game", methods=["POST"])
 def play_game():             
-        id = request.form.get("game_id")
-        game = dict(client["games"].find_one(filter={"_id":ObjectId(id)}))
+    id = request.form.get("game_id")
+    game = dict(client["games"].find_one(filter={"_id":ObjectId(id)}))
 
-        localizacion = game["location"]
-        cachesGame = game["caches"]
-        cachesFound =  (client["user_games"].find_one(filter={"user":session["google_id"],"game":id}))["caches"]
-        print(cachesGame)
-        print(cachesFound)
-        return render_template("play_game.html", game = game, localizacion = localizacion, cachesGame = cachesGame, cachesFound = cachesFound, logged = True)
+    localizacion = game["location"]
+    cachesGame = game["caches"]
+    cachesFound =  (client["user_games"].find_one(filter={"user":session["google_id"],"game":id}))["caches"]
 
+    cacheNames = []
+    cacheHints = []
+
+    for cache in cachesFound:
+        cacheNames.append(cache["name"])
+
+
+    for cache in cachesGame:
+        if cache["name"] not in cacheNames:
+            cacheHints.append(cache["name"])
+            
+    return render_template("play_game.html", game = game, localizacion = localizacion, cachesGame = cachesGame, cachesFound = cachesFound, cacheHints = cacheHints, logged = True)
 
 @app.route("/create_game", methods=["GET"])
 def create_game():     

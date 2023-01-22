@@ -11,26 +11,11 @@
                <th style="width:50%">Hint</th>
             </tr>
          </thead>
-         <tbody>           
-            {% for cache in cachesGame %}
-               {% set found = false %}
-               {% for found_cache in cachesFound %}
-                  {% if found_cache.name == cache.name %}
-                     {% set found = true %}
-                  {% endif %}
-               {% endfor %}
-               {{found}}
-               {% if found %}
-                  <tr>
-                     <td><s>{{cache.hint}}</s></td>
-                  </tr>
-               {% else %}
-                  <tr>
-                     <td>{{cache.hint}}</td>
-                  </tr>     
-               {% endif %} 
-         {% endfor %}
-        </tbody>
+         <tbody>
+            {% for cache in cacheHints %}
+               <tr><td>{{cache}}</td></tr>
+            {% endfor %}
+         </tbody>
       </table>
    </div>
    <div class="col-md-4">
@@ -50,7 +35,7 @@
 </div>
 <div class="row">
    <div class="col-md-12">
-      <script>var localizacion = "{{localizacion}}";var zoom = '{{game.zoom}}';var marks = '{{cachesFound|tojson}}';console.log(marks);</script>
+      <script>var localizacion = "{{localizacion}}"; var zoom = '{{game.zoom}}'; var marks = '{{cachesFound|tojson}}'; console.log(marks);</script>
       <div id="mapaJuego" style="height: 400px;width: 100%;"></div>
    </div>
 </div>
