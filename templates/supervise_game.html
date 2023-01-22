@@ -13,6 +13,11 @@
     </div>
 </div>
 
+<form method="post" action="{{url_for('reset_game')}}">
+    <input type="hidden" name="game_id" value="{{game._id}}">
+    <input type="submit" value="Reset Game">
+</form>
+
 
 
 <div id="accordion" class="accordion">
@@ -61,15 +66,14 @@
                 </tr>
             </thead>
             <tbody>
-                {% for player in players %}
+                {% for player in in_game %}
                 <tr>
                     <td>{{ player.name }}</td>
                     <td>
-                    
-                       
+                       {{player.cachesCount}}
                     </td>
                     <td>
-                        <form method="post" action="{{url_for('supervise_game')}}">
+                        <form method="post" action="">
                             <input type="submit" value="Caches">
                         </form>
                     </td>
@@ -79,7 +83,9 @@
             </table>
         </div>
     </div>
-    </div>
+</div>
+
+
 
 
 <script src="./static/map_game.js"></script>

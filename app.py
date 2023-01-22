@@ -159,8 +159,7 @@ def join_game():
             return redirect("/login")
         # Agrega el id del usuario actual a la lista de jugadores del juego seleccionado        
         user=dict(client["users"].find_one(filter={"google_id":session["google_id"]}))
-        client["user_games"].insert_one({"user": user["google_id"], "game": game_id, "caches": []})
-        #client["user_games"].insert_one({"user":user["google_id"], "game":game_id, "caches":[]})
+        client["user_games"].insert_one({"user": user["google_id"], "name": user["name"], "game": game_id, "caches": []})
 
         return redirect("/join_game")
 
@@ -217,8 +216,9 @@ def supervise_game():
          # Obtiene el id del juego seleccionado
         game_id = request.form.get("game_id")
         # Obtén todos los juegos de la base de datos
-        game , players, users = game_to_supervise(game_id)
-        return render_template("supervise_game.html", game = game, players = players, in_game = users , logged = True)
+        game, users = game_to_supervise(game_id)
+        print(users)
+        return render_template("supervise_game.html", game = game, in_game = users , logged = True)
 
 @app.route('/upload-image', methods=['POST'])
 def upload_image():
@@ -264,6 +264,19 @@ def upload_image():
         else: 
             #messagebox.showwarning("Advertencia", "El cache no es correcto")
             return redirect("/join_game") #CAMBIAR ESTO       
+
+@app.route("/reset_game", methods=["POST"])
+def reset_game():
+    if request.method == "POST":
+        game_id = request.form.get("game_id")
+        #client["games"].update_many({"_id":ObjectId(game_id)},{"$set":{"winner":None, "state":True}}) //SE DEBE DE AGREGAR EL WINNER
+        print(game_id)
+        client["user_games"].update_many({"game":game_id},{"$set":{"caches":[]}})
+        
+        game, users = game_to_supervise(game_id) 
+        print(users)   
+        return render_template("supervise_game.html", game = game, in_game = users , logged = True)
+
 
 
 if __name__ == "__main__":
