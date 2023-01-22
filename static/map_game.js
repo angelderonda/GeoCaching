@@ -30,14 +30,13 @@ function drawMap() {
 
         var marker = new ol.Overlay({
             position: json[i].location,
-            element: document.createElement('div')
+            element: document.createElement('img')
         });
+   
 
-        marker.getElement().style.width = '10px';
-        marker.getElement().style.height = '10px';
-        marker.getElement().style.borderRadius = '50%';
-        marker.getElement().style.backgroundColor = 'red';
-        marker.getElement().innerHTML = json[i].name;
+        marker.getElement().src = 'https://www.tecnodret.es/wp-content/uploads/2017/02/map-marker-icon-768x768.png';
+        marker.getElement().classList.add('marker-icon');
+
         gameMap.addOverlay(marker);
     }
 

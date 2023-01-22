@@ -299,7 +299,6 @@ def obtiene_urls(google_id,game_id):
 
     for image in  user_caches:      
         path = image["image_path"]
-        #INCLUIR AQUI LA LOGICA NECESARIA PARA LEER LA IMAGEN Y MOSTRARLA EN LA PLANTILLA HTML       
         image_urls.append( read_image(path))   
     return image_urls
 
