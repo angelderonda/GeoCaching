@@ -211,22 +211,10 @@ def supervise_game():
 
 @app.route('/upload-image', methods=['POST'])
 def upload_image():
-    cache_image = request.files.get('cache-image')
     cache_name = request.form.get('cache-name')
 
     game_id = request.form.get('game_id')
 
-    #print(cache_image.name)
-
-    # Obtener la ruta de la imagen
-    image_path = "images/"
-    os.chmod(image_path, 0o777)
-
-
-    # Guardar la imagen en el servidor
-    #cache_image.save(image_path)
-
-    
 
     # Obtener los datos del juego del usuario actual
     google_id = session["google_id"]    
@@ -239,12 +227,12 @@ def upload_image():
     for cache in game_data:
         if(cache["name"] == cache_name):  
             #Subir foto
-            images()
-            
+            folder_name = put_image(game_id,google_id,cache["name"])
+            print(folder_name)
             # Crear un nuevo cache
             new_cache = {
                 "name": cache_name,
-                "image_path": image_path, #CUIDADO
+                "image_path": folder_name, #CUIDADO
                 "location":cache["location"]
             }
 
