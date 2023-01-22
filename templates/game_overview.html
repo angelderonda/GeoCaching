@@ -80,12 +80,14 @@
                         <tr>
                             <td>{{ game.name }}</td>
                             <td>{{ game.winner }}</td>
-                            {% if game["supervise"] == 'yes' %}
-                            <form method="post" action="{{url_for('supervise_game')}}">
-                                <input type="hidden" name="game_id" value="{{game._id}}">
-                                <input type="submit" value="Supervise">
-                            </form>
-                            {% endif %}
+                            <td>
+                                {% if game["supervise"] == 'yes' %}
+                                    <form method="post" action="{{url_for('supervise_game')}}">
+                                        <input type="hidden" name="game_id" value="{{game._id}}">
+                                        <input type="submit" value="Supervise">
+                                    </form>
+                                {% endif %}
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
