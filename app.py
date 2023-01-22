@@ -183,9 +183,11 @@ def play_game():
 
     for cache in cachesGame:
         if cache["name"] not in cacheNames:
-            cacheHints.append(cache["name"])
+            cacheHints.append(cache["hint"])
+
+    imagenes = obtiene_urls(session["google_id"],id)
             
-    return render_template("play_game.html", game = game, localizacion = localizacion, cachesGame = cachesGame, cachesFound = cachesFound, cacheHints = cacheHints, logged = True)
+    return render_template("play_game.html", game = game, localizacion = localizacion, cachesGame = cachesGame, cachesFound = cachesFound, cacheHints = cacheHints, image_urls=imagenes,logged = True)
 
 @app.route("/create_game", methods=["GET"])
 def create_game():     
@@ -286,6 +288,11 @@ def view_caches():
     google_id = request.form.get("user_id")
 
 
+    imagenes = obtiene_urls(google_id,game_id)
+    return render_template('view_caches.html', image_urls=imagenes)
+
+
+def obtiene_urls(google_id,game_id):
     user_caches = (client["user_games"].find_one(filter={"user": google_id, "game": game_id}))["caches"]
 
     image_urls = []
@@ -294,9 +301,7 @@ def view_caches():
         path = image["image_path"]
         #INCLUIR AQUI LA LOGICA NECESARIA PARA LEER LA IMAGEN Y MOSTRARLA EN LA PLANTILLA HTML       
         image_urls.append( read_image(path))   
-    # Obtener las URLs de las imágenes del usuario
-    return render_template('view_caches.html', image_urls=image_urls)
-
+    return image_urls
 
 if __name__ == "__main__":
     app.run(debug=True)

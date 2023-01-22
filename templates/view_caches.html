@@ -2,16 +2,20 @@
 
 {% block content %}
 
-<table style="width:100%; margin: 0 auto; border: 2px solid black;">
-  <tr>
-    {% for i in range(0, image_urls|length) %}
-        <td style="padding: 10px;">
-            <img src="{{ image_urls[i] }}" style="width:200px; height:200px; border: 2px solid black;">
-            <br>
-            Cache {{ i+1 }}
-        </td>
-    {% endfor %}
-  </tr>
-</table>
+{% if image_urls|length>0 %}
+  <table style="width:100%; margin: 0 auto; border: 2px solid black;">
+    <tr>
+      {% for i in range(0, image_urls|length) %}
+          <td style="padding: 10px;">
+              <img src="{{ image_urls[i] }}" style="width:200px; height:200px; border: 2px solid black;">
+              <br>
+              Cache {{ i+1 }}
+          </td>
+      {% endfor %}
+    </tr>
+  </table>
+  {% else %}
+  <div class="no-cache-message" style="text-align:center; font-size: 2em; font-weight:bold;">Lo siento, no se encontraron cachés.</div>
+{% endif %}
 
 {% endblock %}

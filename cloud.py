@@ -12,7 +12,8 @@ with open('credentials.json') as cred_file:
 
 session_cloud = boto3.Session(
     aws_access_key_id=cred['ACCESS_KEY_ID'],
-    aws_secret_access_key=cred['SECRET_ACCESS_KEY']
+    aws_secret_access_key=cred['SECRET_ACCESS_KEY'],
+    region_name='eu-central-1'
 )
 s3_client = session_cloud.client('s3')
 BUCKET = cred['BUCKET']
