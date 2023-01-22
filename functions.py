@@ -34,9 +34,9 @@ def game_to_supervise(game_id):
     return game, users
 
 
-def compare_caches(game_caches, user_caches):
-    for cacheg in game_caches:
-        for cacheu in user_caches:
-            if cacheg.name == cacheu.caches.name:
-                return False
+def compare_caches(game_cache, user_caches):
+    for cacheu in user_caches:
+        if game_cache == cacheu["name"]:
+            print(game_cache, cacheu["name"])
+            return False
     return True

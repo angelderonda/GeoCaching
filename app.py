@@ -235,13 +235,9 @@ def upload_image():
     user_name = (client["users"].find_one(filter={"google_id":google_id}))["name"]
     user_caches = client["user_games"].find_one(filter={"user": google_id, "game": game_id})
     caches_totales = len(client["games"].find_one(filter={ "_id": ObjectId(game_id)})["caches"])
-
-    print(game_data)
-    print("---------------------")
-    print(user_caches)
     
     for cache in game_data:
-        if(cache["name"] == cache_name and game_state and compare_caches(game_data, user_caches)):  #que no exista en la lista
+        if(cache["name"] == cache_name and game_state and compare_caches(cache_name, user_caches["caches"])):  #que no exista en la lista
             #Subir foto
             folder_name = put_image(game_id,user_name,cache["name"])
             print(folder_name)
