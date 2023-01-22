@@ -10,16 +10,16 @@
   <div id="game-creator">
     <div id="step1" class="step">
       <h3>Step 1: Set game location and name</h3>
+      <label class="form-label">Game name:</label>
+      <input type="text" id="game-name" required>
       <div id="map" style="height: 400px;width: 400px;"></div>
-      <label>Game name:</label>
-      <input type="text" id="game-name">
-      <button id="next-btn" onclick="nextStep()">Next</button>
+      <button id="next-btn-step1" disabled onclick="nextStep()">Next</button>
     </div>
     <div id="step2" class="step" style="display: none;">
       <h3>Step 2: Add caches</h3>
       <div id="map2" style="height: 400px;width: 400px;"></div>
       <p id="cache-count">Caches added: <span id="cache-count-num"></span>/10</p>
-      <button id="next-btn" onclick="nextStep()">Next</button>
+      <button id="next-btn-step2" disabled onclick="nextStep()">Next</button>
     </div>
     <div id="step3" class="step" style="display: none;">
       <h3>Step 3: Review game</h3>

@@ -66,6 +66,7 @@ function initMap3() {
 
 function setGameLocation() {
     var marker;
+    var nextBtnDisabled = true;
     gameMap.on('click', function (event) {
         gameLocation = ol.proj.toLonLat(event.coordinate);
         zoom = gameMap.getView().getZoom();
@@ -82,24 +83,29 @@ function setGameLocation() {
         marker.getElement().style.backgroundColor = 'red';
         gameMap.addOverlay(marker);
         alert("Game location set at: " + gameLocation + "zoom:" + zoom);
+        var gameName = document.getElementById("game-name").value;
+        if (gameLocation && gameName.trim() !== "") {
+            nextBtnDisabled = false;
+        }
+        document.getElementById("next-btn-step1").disabled = nextBtnDisabled;
     });
-
 }
 
 
 
 function addCache() {
     gameMap2.on('click', function (event) {
+        var nextBtnDisabled = false;
         if (cacheCount < 10) {
             var cacheName = prompt("Please enter the cache name:", "");
-            if (cacheName == null || cacheName == "") {
-                alert("Cache name cannot be empty");
-                return;
+            if (cacheName.trim() === "") {
+                alert("Cache name can not be empty.");
+                nextBtnDisabled = true;
             }
             var cacheHint = prompt("Please enter the hint:", "");
-            if (cacheHint == null || cacheHint == "") {
-                alert("Cache hint cannot be empty");
-                return;
+            if (cacheHint.trim() === "") {
+                alert("Cache hint cannot be empty.");
+                nextBtnDisabled = true;
             }
             var cache = {
                 location: event.coordinate,
@@ -118,6 +124,7 @@ function addCache() {
             gameMap2.addOverlay(marker);
             cacheCount++;
             document.getElementById('cache-count-num').innerHTML = cacheCount;
+            document.getElementById("next-btn-step2").disabled = nextBtnDisabled;
         }
     });
 }
@@ -169,7 +176,7 @@ function finishGame() {
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
-            alert("Juego creado con éxito");
+            alert("Game has been created");
             window.location.href = '/join_game';
         })
         .catch((error) => {
