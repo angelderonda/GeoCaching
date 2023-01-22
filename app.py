@@ -23,7 +23,7 @@ app.secret_key = "your-secret-key"
 #########################
 # MongoDB
 #########################
-client = MongoClient("mongodb+srv://Elena:Elena@geocachingapp.0sxhylv.mongodb.net/test")["Geocaching"]
+client = MongoClient("mongodb+srv://Grupo03:Grupo@geocachingapp.0sxhylv.mongodb.net/test")["Geocaching"]
 
 users = client.db.users
 users_schema = {
@@ -269,8 +269,7 @@ def upload_image():
 def reset_game():
     if request.method == "POST":
         game_id = request.form.get("game_id")
-        #client["games"].update_many({"_id":ObjectId(game_id)},{"$set":{"winner":None, "state":True}}) //SE DEBE DE AGREGAR EL WINNER
-        client["user_games"].update_many({"game":game_id},{"$set":{"caches":[]}})
+        client["games"].update_many({"game":game_id},{"$set":{"winner":"", "state":True, "caches":[]}})
         user_name = (client["users"].find_one(filter={"google_id":session["google_id"]}))["name"]
          # Aquí se eliminan las imagenes
         folder_name = 'geocaching/game_'+game_id+'/'
@@ -302,6 +301,7 @@ def obtiene_urls(google_id,game_id):
         #INCLUIR AQUI LA LOGICA NECESARIA PARA LEER LA IMAGEN Y MOSTRARLA EN LA PLANTILLA HTML       
         image_urls.append( read_image(path))   
     return image_urls
+
 
 if __name__ == "__main__":
     app.run(debug=True)

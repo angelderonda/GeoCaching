@@ -91,8 +91,6 @@ function setGameLocation() {
     });
 }
 
-
-
 function addCache() {
     gameMap2.on('click', function (event) {
         var nextBtnDisabled = false;
@@ -102,9 +100,18 @@ function addCache() {
                 alert("Cache name can not be empty.");
                 nextBtnDisabled = true;
             }
+            if (!/^[a-zA-Z0-9]+$/.test(cacheName)) {
+                alert("Cache name can only contain letters and numbers.");
+                nextBtnDisabled = true;
+            }
             var cacheHint = prompt("Please enter the hint:", "");
             if (cacheHint.trim() === "") {
                 alert("Cache hint cannot be empty.");
+                nextBtnDisabled = true;
+            }
+            var cacheHint = prompt("Please enter the hint:", "");
+            if (!/^[a-zA-Z0-9]+$/.test(cacheHint)) {
+                alert("Cache hint can only contain letters and numbers.");
                 nextBtnDisabled = true;
             }
             var cache = {
@@ -128,7 +135,6 @@ function addCache() {
         }
     });
 }
-
 
 function nextStep() {
     var currentStep = document.querySelector('.step:not([style*="display: none"])');
@@ -198,6 +204,3 @@ function fillCacheTable() {
         tableBody.appendChild(row);
     }
 }
-
-
-
