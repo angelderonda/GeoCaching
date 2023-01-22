@@ -1,7 +1,8 @@
 // Para jugar ya
 
 var mapaJuego;
-
+var popups = [];
+var marcadores = [];
 
 playMap();
 drawMarks();
@@ -25,24 +26,56 @@ function playMap() {
 
 
 function drawMarks() {
-    var json = JSON.parse(marks)
-    console.log(json)
+    var lista = JSON.parse(marks);
+    
 
-    for (var i = 0; i < json.length; i++) {
-
+    for (var i = 0; i < lista.length; i++) {
+        
+        let localizacion = lista[i].location;
+        
         var marker = new ol.Overlay({
-            position: json[i].location,
+            position: localizacion,
+            element: document.createElement('img')
+        });
+
+        marker.getElement().src = 'https://www.tecnodret.es/wp-content/uploads/2017/02/map-marker-icon-768x768.png';
+        marker.getElement().classList.add('marker-icon');
+        marcadores.push(marker);
+
+        var popup = new ol.Overlay({
             element: document.createElement('div')
         });
 
-        marker.getElement().style.width = '10px';
-        marker.getElement().style.height = '10px';
-        marker.getElement().style.borderRadius = '50%';
-        marker.getElement().style.backgroundColor = 'red';
-        marker.getElement().innerHTML = json[i].name;
-        mapaJuego.addOverlay(marker);
+        //Añadir una imagen al elemento del popup
+        var img = document.createElement('img');        
+        img.src = 'https://img.freepik.com/vector-gratis/hermosa-casa_24877-50819.jpg?w=2000';
+        img.style.width = '90px';
+        img.style.height = '90px';
+        popup.getElement().classList.add('popup-window');
+        popup.getElement().appendChild(img);        
+        popups.push(popup);
+
+        marker.getElement().addEventListener('click', function () {
+            popup.setPosition(localizacion);
+            popup.set("visible", true)
+        });
+
     }
 
+    for (let index = 0; index < 7; index++) {
+        mapaJuego.addOverlay(marcadores[index]);
+        mapaJuego.addOverlay(popups[index]);
+    }
+
+    
+
 }
+
+mapaJuego.on('click', function (e) {
+    for (var i = 0; i < popups.length; i++) {
+        popups[i].set("visible", false);
+    }
+});
+
 
 
