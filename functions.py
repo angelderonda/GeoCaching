@@ -32,3 +32,11 @@ def game_to_supervise(game_id):
     game = client["games"].find_one(filter={"_id":ObjectId(game_id)})
     users = list(client["user_games"].aggregate([{"$match": {"game": game_id}},{"$addFields": {"cachesCount": {"$size": "$caches"}}}]))
     return game, users
+
+
+def compare_caches(game_caches, user_caches):
+    for cacheg in game_caches:
+        for cacheu in user_caches:
+            if cacheg.name == cacheu.caches.name:
+                return False
+    return True
