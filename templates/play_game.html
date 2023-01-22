@@ -13,16 +13,23 @@
          </thead>
          <tbody>           
             {% for cache in cachesGame %}
-            <tr>
-                {% for found_cache in cachesFound %}
-                    {% if found_cache.name == cache.hint %}
-                        <td><s>{{cache.hint}}</s></td>
-                    {% else %}
-                        <td>{{cache.hint}}</td>
-                    {% endif %}
-                {% endfor %}
-            </tr>
-            {% endfor %}
+               {% set found = false %}
+               {% for found_cache in cachesFound %}
+                  {% if found_cache.name == cache.name %}
+                     {% set found = true %}
+                  {% endif %}
+               {% endfor %}
+               {{found}}
+               {% if found %}
+                  <tr>
+                     <td><s>{{cache.hint}}</s></td>
+                  </tr>
+               {% else %}
+                  <tr>
+                     <td>{{cache.hint}}</td>
+                  </tr>     
+               {% endif %} 
+         {% endfor %}
         </tbody>
       </table>
    </div>

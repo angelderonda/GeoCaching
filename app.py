@@ -193,7 +193,8 @@ def save_game():
         'caches':  game.get("caches"),
         'zoom': game.get("zoom"),
         'owner':session['google_id'],
-        'state': True, 
+        'state': True,
+        'winner':""
     })
     return jsonify({"status": "success", "message": "Juego guardado"})
 
@@ -219,16 +220,15 @@ def upload_image():
     # Obtener los datos del juego del usuario actual
     google_id = session["google_id"]    
     game_data = client["games"].find_one(filter={"_id":ObjectId(game_id)})
+    game_state = game_data["state"]
     game_data = game_data["caches"]
 
     user_name = (client["users"].find_one(filter={"google_id":google_id}))["name"]
-
-
     user_caches = client["user_games"].find_one(filter={"user": google_id, "game": game_id})
-
-
+    caches_totales = len(client["games"].find_one(filter={ "_id": ObjectId(game_id)})["caches"])
+    
     for cache in game_data:
-        if(cache["name"] == cache_name):  
+        if(cache["name"] == cache_name and game_state):  #que no exista en la lista
             #Subir foto
             folder_name = put_image(game_id,user_name,cache["name"])
             print(folder_name)
@@ -241,12 +241,17 @@ def upload_image():
 
             # Añadir el nuevo cache a la lista de caches del juego
             user_caches["caches"].append(new_cache)
-
             # Actualizar la información del juego en la base de datos
             client["user_games"].update_one(
                 filter={"user": google_id, "game": game_id},
                 update={"$set": {"caches": user_caches["caches"]}}
-            )
+            )  
+            caches_user= len(client["user_games"].find_one(filter={ "game": game_id, "name":user_name})["caches"])
+            if(caches_totales==caches_user):
+                client["games"].update_one(
+                filter={"_id": ObjectId(game_id)},
+                update={"$set": {"state": False, "winner":user_name}}
+            )  
     return redirect("/join_game") #CAMBIAR ESTO       
 
 @app.route("/reset_game", methods=["POST"])
