@@ -62,7 +62,7 @@ function drawMarks() {
 
     }
 
-    for (let index = 0; index < 7; index++) {
+    for (let index = 0; index < lista.length; index++) {
         mapaJuego.addOverlay(marcadores[index]);
         mapaJuego.addOverlay(popups[index]);
     }
@@ -70,12 +70,3 @@ function drawMarks() {
     
 
 }
-
-mapaJuego.on('click', function (e) {
-    for (var i = 0; i < popups.length; i++) {
-        popups[i].set("visible", false);
-    }
-});
-
-
-
