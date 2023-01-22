@@ -14,6 +14,7 @@ import json
 
 
 from functions import *
+from cloud import *
 
 app = Flask(__name__,template_folder="templates")
 app.secret_key = "your-secret-key"
@@ -174,25 +175,13 @@ def play_game():
         cachesFound =  (client["user_games"].find_one(filter={"user":session["google_id"],"game":id}))["caches"]
         print(cachesGame)
         print(cachesFound)
-        return render_template("play_game.html", game_id = id, localizacion = localizacion, cachesGame = cachesGame, cachesFound = cachesFound, logged = True)
+        return render_template("play_game.html", game = game, localizacion = localizacion, cachesGame = cachesGame, cachesFound = cachesFound, logged = True)
 
 
 @app.route("/create_game", methods=["GET"])
 def create_game():     
     if request.method == "GET":   
         return render_template("create_game.html", logged = True)
-    else:   
-        coordinates = request.form["coordinates-input"]
-        # Procesar las coordenadas
-        lonlat = coordinates.split(',')
-        lon = float(lonlat[0])
-        lat = float(lonlat[1])
-        # Hacer algo con las coordenadas, como guardarlas en la base de datos
-        # ...
-        # Mostrar un mensaje de éxito
-        mensaje = "Coordenadas guardadas exitosamente!"
-        #return render_template("create_game.html", mensaje=mensaje)
-        return render_template("play_game.html", logged = True)
 
 
 @app.route("/save_game", methods=["POST"])
@@ -224,7 +213,10 @@ def supervise_game():
 def upload_image():
     cache_image = request.files.get('cache-image')
     cache_name = request.form.get('cache-name')
+
     game_id = request.form.get('game_id')
+
+    #print(cache_image.name)
 
     # Obtener la ruta de la imagen
     image_path = "images/"
@@ -237,19 +229,23 @@ def upload_image():
     
 
     # Obtener los datos del juego del usuario actual
-    google_id = session["google_id"]
+    google_id = session["google_id"]    
     game_data = client["games"].find_one(filter={"_id":ObjectId(game_id)})
+    game_data = game_data["caches"]
+
     user_caches = client["user_games"].find_one(filter={"user": google_id, "game": game_id})
 
-    print(game_data["caches"])
 
-    for cache in game_data["caches"]:
-        print(cache["name"] , "///",cache_name)
+    for cache in game_data:
         if(cache["name"] == cache_name):  
+            #Subir foto
+            images()
+            
             # Crear un nuevo cache
             new_cache = {
                 "name": cache_name,
-                "image_path": image_path #CUIDADO
+                "image_path": image_path, #CUIDADO
+                "location":cache["location"]
             }
 
             # Añadir el nuevo cache a la lista de caches del juego
@@ -260,10 +256,7 @@ def upload_image():
                 filter={"user": google_id, "game": game_id},
                 update={"$set": {"caches": user_caches["caches"]}}
             )
-            return redirect("/join_game") #CAMBIAR ESTO       
-        else: 
-            #messagebox.showwarning("Advertencia", "El cache no es correcto")
-            return redirect("/join_game") #CAMBIAR ESTO       
+    return redirect("/join_game") #CAMBIAR ESTO       
 
 @app.route("/reset_game", methods=["POST"])
 def reset_game():

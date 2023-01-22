@@ -34,7 +34,7 @@
             <br>
             <label for="cache-image">Upload Cache Image:</label>
             <input type="file" id="cache-image" name="cache-image">
-            <input type="hidden" name="game_id" value="{{game_id}}">
+            <input type="hidden" name="game_id" value="{{game._id}}">
             <br>
             <input type="submit" value="Upload">
          </form>
@@ -43,7 +43,7 @@
 </div>
 <div class="row">
    <div class="col-md-12">
-      <script>var localizacion = "{{localizacion}}";</script>
+      <script>var localizacion = "{{localizacion}}";var zoom = '{{game.zoom}}';var marks = '{{cachesFound|tojson}}';console.log(marks);</script>
       <div id="mapaJuego" style="height: 400px;width: 100%;"></div>
    </div>
 </div>
