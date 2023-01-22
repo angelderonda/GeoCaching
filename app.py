@@ -263,7 +263,7 @@ def upload_image():
                 filter={"_id": ObjectId(game_id)},
                 update={"$set": {"state": False, "winner":user_name}}
             )  
-    return redirect("/join_game") #CAMBIAR ESTO       
+    return play_game()
 
 @app.route("/reset_game", methods=["POST"])
 def reset_game():
