@@ -25,10 +25,10 @@ def user_games(active):
             game["winner"]
         if game["owner"]==session["google_id"]:
             game["supervise"] = 'yes'
-
-     
     print(games)
+    print(" ------------------------------ ")
     return games
+
 def game_to_supervise(game_id):
     game = client["games"].find_one(filter={"_id":ObjectId(game_id)})
     users = list(client["user_games"].aggregate([{"$match": {"game": game_id}},{"$addFields": {"cachesCount": {"$size": "$caches"}}}]))
