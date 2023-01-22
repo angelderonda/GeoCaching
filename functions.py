@@ -22,12 +22,13 @@ def user_games(active):
         else:
             game["participate"] = 'no'
         if "winner" in game and game["state"]==False:
-            user = dict(client["users"].find_one(filter={"_id":ObjectId(game["winner"])}))
-            game["winner"] = user["name"]
+            game["winner"]
         if game["owner"]==session["google_id"]:
             game["supervise"] = 'yes'
-    return games
 
+     
+    print(games)
+    return games
 def game_to_supervise(game_id):
     game = client["games"].find_one(filter={"_id":ObjectId(game_id)})
     users = list(client["user_games"].aggregate([{"$match": {"game": game_id}},{"$addFields": {"cachesCount": {"$size": "$caches"}}}]))
