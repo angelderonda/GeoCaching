@@ -221,13 +221,16 @@ def upload_image():
     game_data = client["games"].find_one(filter={"_id":ObjectId(game_id)})
     game_data = game_data["caches"]
 
+    user_name = (client["users"].find_one(filter={"google_id":google_id}))["name"]
+
+
     user_caches = client["user_games"].find_one(filter={"user": google_id, "game": game_id})
 
 
     for cache in game_data:
         if(cache["name"] == cache_name):  
             #Subir foto
-            folder_name = put_image(game_id,google_id,cache["name"])
+            folder_name = put_image(game_id,user_name,cache["name"])
             print(folder_name)
             # Crear un nuevo cache
             new_cache = {
@@ -258,6 +261,24 @@ def reset_game():
         print(users)   
         return render_template("supervise_game.html", game = game, in_game = users , logged = True)
 
+
+
+@app.route('/view_caches', methods=["POST"])
+def view_caches():
+    game_id = request.form.get("game_id")
+    google_id = request.form.get("user_id")
+
+
+    user_caches = (client["user_games"].find_one(filter={"user": google_id, "game": game_id}))["caches"]
+
+    image_urls = []
+
+    for image in  user_caches:      
+        path = image["image_path"]
+        #INCLUIR AQUI LA LOGICA NECESARIA PARA LEER LA IMAGEN Y MOSTRARLA EN LA PLANTILLA HTML       
+        image_urls.append( read_image(path))   
+    # Obtener las URLs de las imágenes del usuario
+    return render_template('view_caches.html', image_urls=image_urls)
 
 
 if __name__ == "__main__":

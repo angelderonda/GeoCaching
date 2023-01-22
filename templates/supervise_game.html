@@ -73,7 +73,9 @@
                        {{player.cachesCount}}
                     </td>
                     <td>
-                        <form method="post" action="">
+                        <form method="post" action="{{url_for('view_caches')}}">
+                            <input type="hidden" name="game_id" value="{{player.game}}">
+                            <input type="hidden" name="user_id" value="{{player.user}}">  
                             <input type="submit" value="Caches">
                         </form>
                     </td>
