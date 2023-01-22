@@ -29,17 +29,7 @@ def user_games(active):
     return games
 
 def game_to_supervise(game_id):
-    players = []
     game = client["games"].find_one(filter={"_id":ObjectId(game_id)})
-    users=list(client["user_games"].find(filter={"game":game_id}))
-
-    #caches_count = games.find_one({'name': game_name}, {"$size": "$caches"})
-    #caches_size = len(game["caches"])
-
-    
-
-    for user in users:
-        name=client["users"].find_one(filter={"google_id":user["user"]})
-        players.append(name)
-    print(players)
-    return game, players, users
+    users = list(client["user_games"].aggregate([{"$match": {"game": game_id}},{"$addFields": {"cachesCount": {"$size": "$caches"}}}]))
+    print(users)
+    return game, users
