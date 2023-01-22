@@ -269,15 +269,14 @@ def upload_image():
 def reset_game():
     if request.method == "POST":
         game_id = request.form.get("game_id")
-        #client["games"].update_many({"_id":ObjectId(game_id)},{"$set":{"winner":None, "state":True}}) //SE DEBE DE AGREGAR EL WINNER
+        client["games"].update_many({"_id":ObjectId(game_id)},{"$set":{"winner":'', "state":True}})
         client["user_games"].update_many({"game":game_id},{"$set":{"caches":[]}})
-        user_name = (client["users"].find_one(filter={"google_id":session["google_id"]}))["name"]
+
          # Aquí se eliminan las imagenes
         folder_name = 'geocaching/game_'+game_id+'/'
         delete_folder(folder_name)
 
-        game, users = game_to_supervise(game_id) 
-        print(users)   
+        game, users = game_to_supervise(game_id)   
         return render_template("supervise_game.html", game = game, in_game = users , logged = True)
 
 
