@@ -17,7 +17,9 @@ function playMap() {
         ],
         view: new ol.View({
             center: ol.proj.fromLonLat(JSON.parse(localizacion)),
-            zoom: zoom
+            zoom: zoom,
+            maxZoom: zoom,
+            minZoom: zoom
         })
 
     });

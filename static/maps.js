@@ -40,7 +40,9 @@ function initMap2() {
         ],
         view: new ol.View({
             center: ol.proj.fromLonLat(gameLocation),
-            zoom: zoom
+            zoom: zoom,
+            maxZoom: zoom,
+            minZoom: zoom
         })
     });
 }
@@ -55,7 +57,9 @@ function initMap3() {
         ],
         view: new ol.View({
             center: ol.proj.fromLonLat(gameLocation),
-            zoom: zoom
+            zoom: zoom,
+            maxZoom: zoom,
+            minZoom: zoom
         })
     });
 }
@@ -88,9 +92,15 @@ function addCache() {
     gameMap2.on('click', function (event) {
         if (cacheCount < 10) {
             var cacheName = prompt("Please enter the cache name:", "");
-            while (cacheName == null) { var cacheName = prompt("Please enter the cache name:", ""); }
+            if (cacheName == null || cacheName == "") {
+                alert("Cache name cannot be empty");
+                return;
+            }
             var cacheHint = prompt("Please enter the hint:", "");
-            while (cacheName == null) { var cacheName = prompt("Please enter the hint:", ""); }
+            if (cacheHint == null || cacheHint == "") {
+                alert("Cache hint cannot be empty");
+                return;
+            }
             var cache = {
                 location: event.coordinate,
                 name: cacheName,
