@@ -40,7 +40,9 @@ function initMap2() {
         ],
         view: new ol.View({
             center: ol.proj.fromLonLat(gameLocation),
-            zoom: zoom
+            zoom: zoom,
+            maxZoom: zoom,
+            minZoom: zoom
         })
     });
 }
@@ -55,7 +57,9 @@ function initMap3() {
         ],
         view: new ol.View({
             center: ol.proj.fromLonLat(gameLocation),
-            zoom: zoom
+            zoom: zoom,
+            maxZoom: zoom,
+            minZoom: zoom
         })
     });
 }
