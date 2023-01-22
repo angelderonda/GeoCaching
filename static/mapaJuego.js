@@ -29,6 +29,8 @@ function playMap() {
 
 function drawMarks() {
     var lista = JSON.parse(marks);
+    var imagenes = JSON.parse(image_urls);
+
     
 
     for (var i = 0; i < lista.length; i++) {
@@ -50,7 +52,7 @@ function drawMarks() {
 
         //Añadir una imagen al elemento del popup
         var img = document.createElement('img');        
-        img.src = 'https://img.freepik.com/vector-gratis/hermosa-casa_24877-50819.jpg?w=2000';
+        img.src = imagenes[i];
         img.style.width = '90px';
         img.style.height = '90px';
         popup.getElement().classList.add('popup-window');

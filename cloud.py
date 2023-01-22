@@ -1,5 +1,6 @@
-from flask import  request, Response
-import boto3, json
+from flask import request, Response
+import boto3
+import json
 from io import BytesIO
 
 # Leemos los credenciales
@@ -15,36 +16,51 @@ session_cloud = boto3.Session(
     region_name='eu-central-1'
 )
 s3_client = session_cloud.client('s3')
-Bucket = cred['BUCKET']
+BUCKET = cred['BUCKET']
 
-def put_image(game_id,user_name,name_cache):
+
+def put_image(game_id, user_name, name_cache):
     # Obtener el archivo del formulario
     file = request.files.get('cache-image')
     # Obtener el nombre del archivo
     file_content = file.read()
-    #Pasa a binerario
+    # Pasa a binerario
     file_bytes = BytesIO(file_content)
 
-    folder_name = 'geocaching/game_'+game_id+'/'+user_name+'/' + name_cache + '.jpeg'
+    folder_name = 'geocaching/game_'+game_id + \
+        '/'+user_name+'/' + name_cache + '.jpeg'
     # Subir el archivo a S3
-    s3_client.put_object(Bucket=Bucket, Key=folder_name, Body=file_bytes.getvalue())
+    s3_client.put_object(Bucket=BUCKET, Key=folder_name,
+                         Body=file_bytes.getvalue())
 
     return folder_name
 
 
 def read_image(folder):
-   
-     # Generar un enlace público
+
+    # Generar un enlace público
     url = s3_client.generate_presigned_url(
         'get_object',
         Params={
-            'Bucket': Bucket,
+            'Bucket': BUCKET,
             'Key': folder,
         },
         ExpiresIn=3600
     )
-   
+
     return url
 
 
-    
+def delete_folder(folder_name):
+    print(folder_name)
+    response = s3_client.list_objects_v2(Bucket=BUCKET, Prefix=folder_name)
+    keys_to_delete = [{'Key': obj['Key']}
+                      for obj in response.get('Contents', [])]
+    response = s3_client.delete_objects(
+        Bucket=BUCKET,
+        Delete={
+            'Objects': keys_to_delete,
+        }
+
+    )
+    return response

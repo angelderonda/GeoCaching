@@ -183,9 +183,11 @@ def play_game():
 
     for cache in cachesGame:
         if cache["name"] not in cacheNames:
-            cacheHints.append(cache["name"])
+            cacheHints.append(cache["hint"])
+
+    imagenes = obtiene_urls(session["google_id"],id)
             
-    return render_template("play_game.html", game = game, localizacion = localizacion, cachesGame = cachesGame, cachesFound = cachesFound, cacheHints = cacheHints, logged = True)
+    return render_template("play_game.html", game = game, localizacion = localizacion, cachesGame = cachesGame, cachesFound = cachesFound, cacheHints = cacheHints, image_urls=imagenes,logged = True)
 
 @app.route("/create_game", methods=["GET"])
 def create_game():     
@@ -268,9 +270,12 @@ def reset_game():
     if request.method == "POST":
         game_id = request.form.get("game_id")
         #client["games"].update_many({"_id":ObjectId(game_id)},{"$set":{"winner":None, "state":True}}) //SE DEBE DE AGREGAR EL WINNER
-        print(game_id)
         client["user_games"].update_many({"game":game_id},{"$set":{"caches":[]}})
-        
+        user_name = (client["users"].find_one(filter={"google_id":session["google_id"]}))["name"]
+         # Aquí se eliminan las imagenes
+        folder_name = 'geocaching/game_'+game_id+'/'
+        delete_folder(folder_name)
+
         game, users = game_to_supervise(game_id) 
         print(users)   
         return render_template("supervise_game.html", game = game, in_game = users , logged = True)
@@ -283,6 +288,11 @@ def view_caches():
     google_id = request.form.get("user_id")
 
 
+    imagenes = obtiene_urls(google_id,game_id)
+    return render_template('view_caches.html', image_urls=imagenes)
+
+
+def obtiene_urls(google_id,game_id):
     user_caches = (client["user_games"].find_one(filter={"user": google_id, "game": game_id}))["caches"]
 
     image_urls = []
@@ -291,9 +301,7 @@ def view_caches():
         path = image["image_path"]
         #INCLUIR AQUI LA LOGICA NECESARIA PARA LEER LA IMAGEN Y MOSTRARLA EN LA PLANTILLA HTML       
         image_urls.append( read_image(path))   
-    # Obtener las URLs de las imágenes del usuario
-    return render_template('view_caches.html', image_urls=image_urls)
-
+    return image_urls
 
 if __name__ == "__main__":
     app.run(debug=True)
