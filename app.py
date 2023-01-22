@@ -14,6 +14,7 @@ import json
 
 
 from functions import *
+from cloud import *
 
 app = Flask(__name__,template_folder="templates")
 app.secret_key = "your-secret-key"
@@ -237,6 +238,9 @@ def upload_image():
 
     for cache in game_data:
         if(cache["name"] == cache_name):  
+            #Subir foto
+            images()
+            
             # Crear un nuevo cache
             new_cache = {
                 "name": cache_name,
