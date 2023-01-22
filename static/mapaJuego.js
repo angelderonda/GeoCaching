@@ -1,5 +1,3 @@
-// Para jugar ya
-
 var mapaJuego;
 var popups = [];
 var marcadores = [];
@@ -25,16 +23,13 @@ function playMap() {
     });
 }
 
-
-
 function drawMarks() {
     var lista = JSON.parse(marks);
     var imagenes = JSON.parse(image_urls);
 
-    
+    console.log(imagenes);
 
     for (var i = 0; i < lista.length; i++) {
-        
         let localizacion = lista[i].location;
         
         var marker = new ol.Overlay({
@@ -44,6 +39,7 @@ function drawMarks() {
 
         marker.getElement().src = 'https://www.tecnodret.es/wp-content/uploads/2017/02/map-marker-icon-768x768.png';
         marker.getElement().classList.add('marker-icon');
+        marker.getElement().dataset.index = i;
         marcadores.push(marker);
 
         var popup = new ol.Overlay({
@@ -52,7 +48,6 @@ function drawMarks() {
 
         //Añadir una imagen al elemento del popup
         var img = document.createElement('img');        
-        img.src = imagenes[i];
         img.style.width = '90px';
         img.style.height = '90px';
         popup.getElement().classList.add('popup-window');
@@ -60,6 +55,8 @@ function drawMarks() {
         popups.push(popup);
 
         marker.getElement().addEventListener('click', function () {
+            var index = this.dataset.index;
+            img.src = imagenes[index];
             popup.setPosition(localizacion);
             popup.set("visible", true)
         });
@@ -70,7 +67,4 @@ function drawMarks() {
         mapaJuego.addOverlay(marcadores[index]);
         mapaJuego.addOverlay(popups[index]);
     }
-
-    
-
 }

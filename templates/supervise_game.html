@@ -7,6 +7,11 @@
     <div id="game-creator">
       <div id="step1" class="step">
         <h3>Game:{{ game.name}}</h3>
+        {% if game.winner == '' %}
+            <h3>Game in progress...</h3>
+        {% else %}
+            <h3>Winner: {{game.winner}}</h3>
+        {% endif %}
         <script>var center = '{{ game.location}}';var zoom = '{{game.zoom}}' ;var caches_list ='{{ game.caches|tojson}}' </script>
         <div id="map_view" style="height: 400px;width: 400px;"></div>
       </div>

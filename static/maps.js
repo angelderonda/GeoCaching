@@ -75,12 +75,12 @@ function setGameLocation() {
         }
         marker = new ol.Overlay({
             position: event.coordinate,
-            element: document.createElement('div')
+            element: document.createElement('img')
         });
-        marker.getElement().style.width = '10px';
-        marker.getElement().style.height = '10px';
-        marker.getElement().style.borderRadius = '50%';
-        marker.getElement().style.backgroundColor = 'red';
+
+
+        marker.getElement().src = 'https://www.tecnodret.es/wp-content/uploads/2017/02/map-marker-icon-768x768.png';
+        marker.getElement().classList.add('marker-icon');
         gameMap.addOverlay(marker);
         alert("Game location set at: " + gameLocation + "zoom:" + zoom);
         var gameName = document.getElementById("game-name").value;
@@ -121,14 +121,14 @@ function addCache() {
             };
             var marker = new ol.Overlay({
                 position: cache.location,
-                element: document.createElement('div')
+                element: document.createElement('img')
             });
-            caches.push(cache);
-            marker.getElement().style.width = '10px';
-            marker.getElement().style.height = '10px';
-            marker.getElement().style.borderRadius = '50%';
-            marker.getElement().style.backgroundColor = 'red';
+
+            marker.getElement().src = 'https://www.tecnodret.es/wp-content/uploads/2017/02/map-marker-icon-768x768.png';
+            marker.getElement().classList.add('marker-icon');
             gameMap2.addOverlay(marker);
+
+            caches.push(cache);
             cacheCount++;
             document.getElementById('cache-count-num').innerHTML = cacheCount;
             document.getElementById("next-btn-step2").disabled = nextBtnDisabled;
@@ -150,13 +150,11 @@ function nextStep() {
             caches.forEach(function (cache) {
                 var marker = new ol.Overlay({
                     position: cache.location,
-                    element: document.createElement('div')
+                    element: document.createElement('img')
                 });
-                marker.getElement().style.width = '10px';
-                marker.getElement().style.height = '10px';
-                marker.getElement().style.borderRadius = '50%';
-                marker.getElement().style.backgroundColor = 'red';
-                marker.getElement().innerHTML = cache.name;
+
+                marker.getElement().src = 'https://www.tecnodret.es/wp-content/uploads/2017/02/map-marker-icon-768x768.png';
+                marker.getElement().classList.add('marker-icon');
                 gameMap3.addOverlay(marker);
             });
             fillCacheTable();
