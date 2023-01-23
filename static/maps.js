@@ -96,23 +96,16 @@ function addCache() {
         var nextBtnDisabled = false;
         if (cacheCount < 10) {
             var cacheName = prompt("Please enter the cache name:", "");
-            if (cacheName.trim() === "") {
-                alert("Cache name can not be empty.");
+            while (!/^[a-zA-Z0-9]+$/.test(cacheName) || cacheName.trim() === "") {
+                alert("Cache name can not be empty and can only contain letters and numbers.");
                 nextBtnDisabled = true;
-            }
-            if (!/^[a-zA-Z0-9]+$/.test(cacheName)) {
-                alert("Cache name can only contain letters and numbers.");
-                nextBtnDisabled = true;
+                var cacheName = prompt("Please enter the cache name:", "");
             }
             var cacheHint = prompt("Please enter the hint:", "");
-            if (cacheHint.trim() === "") {
-                alert("Cache hint cannot be empty.");
+            while (!/^[a-zA-Z0-9]+$/.test(cacheHint) || cacheHint.trim() === "") { 
+                alert("Cache hint can not be empty and can only contain letters and numbers.");
                 nextBtnDisabled = true;
-            }
-            var cacheHint = prompt("Please enter the hint:", "");
-            if (!/^[a-zA-Z0-9]+$/.test(cacheHint)) {
-                alert("Cache hint can only contain letters and numbers.");
-                nextBtnDisabled = true;
+                var cacheHint = prompt("Please enter the hint:", "");  
             }
             var cache = {
                 location: event.coordinate,
