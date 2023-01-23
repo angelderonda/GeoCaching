@@ -52,15 +52,17 @@ def read_image(folder):
 
 
 def delete_folder(folder_name):
-    print(folder_name)
     response = s3_client.list_objects_v2(Bucket=BUCKET, Prefix=folder_name)
-    keys_to_delete = [{'Key': obj['Key']}
-                      for obj in response.get('Contents', [])]
+    contents = response.get('Contents', [])
+    if not contents:
+        print(f"No objects found in {folder_name}.")
+        return 
+    
+    keys_to_delete = [{'Key': obj['Key']} for obj in contents]
     response = s3_client.delete_objects(
         Bucket=BUCKET,
         Delete={
             'Objects': keys_to_delete,
         }
-
     )
-    return response
+    return 
