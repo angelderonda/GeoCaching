@@ -26,35 +26,60 @@ app.secret_key = "your-secret-key"
 # Connects to MongoDB database using the MongoClient class (database is named Geocaching)
 client = MongoClient("mongodb+srv://Grupo03:Grupo@geocachingapp.0sxhylv.mongodb.net/test")["Geocaching"]
 
-
-
-# Create collection "users" in the Geocaching database
 users = client.db.users
 users_schema = {
     'name': StringField,
     'google_id': StringField, 
 }
 
-# Create collection "games" in the Geocaching database
 games = client.db.games
 games_schema = {
-    'name': StringField,
-    'locatiton': DictField,
-    'caches': DictField,
-    'zoom': IntField,
-    'owner': StringField,
-    'state': BooleanField,
-    'winner': StringField,
+    'name': StringField, # Overview
+    'owner': StringField, # Creation
+    'state': StringField, # Overview, Supervition
+    'winner': StringField, # Overview
+    'finalists': ListField, # Overview
+    'view': DictField, # Creation
+    'caches': ListField, # Creation, Supervition
 }
 
-# Create collection "user_games" in the Geocaching database
-user_games = client.db.caches
-user_games_schema = {
-    'user': StringField,
+caches = client.db.caches
+caches_schema = {
     'name': StringField,
+    'location': DictField,
+    'hint': DictField,
+    'state': StringField,
+    'finder': StringField,
     'game_id': StringField,
-    'caches': DictField,
 }
+
+# Create collection "users" in the Geocaching database
+# users = client.db.users
+# users_schema = {
+#     'name': StringField,
+#     'google_id': StringField, 
+# }
+
+# Create collection "games" in the Geocaching database
+# games = client.db.games
+# games_schema = {
+#     'name': StringField,
+#     'locatiton': DictField,
+#     'caches': DictField,
+#     'zoom': IntField,
+#     'owner': StringField,
+#     'state': BooleanField,
+#     'winner': StringField,
+# }
+
+# Create collection "user_games" in the Geocaching database
+# user_games = client.db.caches
+# user_games_schema = {
+#     'user': StringField,
+#     'name': StringField,
+#     'game_id': StringField,
+#     'caches': DictField,
+# }
 
 
 #########################
@@ -102,7 +127,7 @@ def index():
 @app.route("/login", methods=['POST'])
 def login():
     authorization_url, state = flow.authorization_url() # Security feature
-    session["state"] = state # Esures no third party has hooked on the request by savin state and session
+    session["state"] = state # Ensures no third party has hooked on the request by savin state and session
     return redirect(authorization_url)
 
 # Clear user session
