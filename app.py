@@ -29,32 +29,32 @@ client = MongoClient("mongodb+srv://Grupo03:Grupo@geocachingapp.0sxhylv.mongodb.
 
 
 # Create collection "users" in the Geocaching database
-users = client.db.users
-users_schema = {
-    'name': StringField,
-    'google_id': StringField, 
-}
+#users = client.db.users
+#users_schema = {
+#    'name': StringField,
+#    'google_id': StringField, 
+#}
 
 # Create collection "games" in the Geocaching database
-games = client.db.games
-games_schema = {
-    'name': StringField,
-    'locatiton': DictField,
-    'caches': DictField,
-    'zoom': IntField,
-    'owner': StringField,
-    'state': BooleanField,
-    'winner': StringField,
-}
+#games = client.db.games
+#games_schema = {
+#    'name': StringField,
+#    'locatiton': DictField,
+#    'caches': DictField,
+#    'zoom': IntField,
+#    'owner': StringField,
+#    'state': BooleanField,
+#    'winner': StringField,
+#}
 
 # Create collection "user_games" in the Geocaching database
-user_games = client.db.caches
-user_games_schema = {
-    'user': StringField,
-    'name': StringField,
-    'game_id': StringField,
-    'caches': DictField,
-}
+#user_games = client.db.caches
+#user_games_schema = {
+#    'user': StringField,
+#    'name': StringField,
+#    'game_id': StringField,
+#    'caches': DictField,
+#}
 
 
 #########################
@@ -88,21 +88,11 @@ def login_is_required(function):
             return function()
     return wrapper
 
-
-#########################
-# Interface & Functions 
-#########################
-
-# App homepage
-@app.route("/")
-def index():
-    return render_template("index.html")
-
 # Redirect user to the Google authentificator
 @app.route("/login", methods=['POST'])
 def login():
     authorization_url, state = flow.authorization_url() # Security feature
-    session["state"] = state # Esures no third party has hooked on the request by savin state and session
+    session["state"] = state # Ensures no third party has hooked on the request by savin state and session
     return redirect(authorization_url)
 
 # Clear user session
@@ -135,6 +125,17 @@ def callback():
     session["name"] = id_info.get("name")
     # Once logged in, the users can navigate in a protected area
     return redirect("/join_game")
+
+
+#########################
+# Interface & Functions 
+#########################
+
+# App homepage
+@app.route("/")
+def index():
+    return render_template("index.html")
+
 
 # Participate in a game
 @app.route("/join_game", methods=["GET", "POST"])
@@ -202,7 +203,7 @@ def supervise_game():
         game, users = game_to_supervise(game_id)
         return render_template("supervise_game.html", game = game, in_game = users , logged = True)
 
-# 
+# Upload Image 
 @app.route('/upload-image', methods=['POST'])
 def upload_image():
     cache_name = request.form.get('cache-name')
