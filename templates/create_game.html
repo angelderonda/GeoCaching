@@ -1,39 +1,36 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <div class="row" id="game-creator">
-    <div id="step1" class="step col-md-7">
-      <h1> Create your game</h1>
-      <h3>Step 1:</h3>
-      <h3>Set game location and name</h3>
+<div id="game-creator">
+  <div id="step1" class="step row">
+    <div class="col-md-7">
+      <h3> Create your game</h3>
+      <h3>Step 1: Set game location and name</h3>
       <label class="form-label">Game name:</label>
       <input type="text" id="game-name" required>
       <button id="next-btn-step1" disabled onclick="nextStep()">Next</button>
     </div>
-    <div id="step1" class="step col-md-5">
-      <div id="map" class="map"></div>
+    <div class="col-md-12">
+      <div id="map" style="height: 800px;width: 100%;"></div>
     </div>
   </div>
-    
 
-  <div class="row">
-    <div id="step2" class="step col-md-7" style="display: none;">
-      <h1> Create your game</h1>
-      <h3>Step 2:</h3>
-      <h3>Add caches</h3>
+  <div id="step2" class="step row" style="display: none;">
+    <div class="col-md-7">
+      <h3> Create your game</h3>
+      <h3>Step 2: Add caches</h3>
       <p id="cache-count">Caches added: <span id="cache-count-num"></span>/10</p>
       <button id="next-btn-step2" disabled onclick="nextStep()">Next</button>
     </div>
-    <div id="step2" class="step col-md-5">
-      <div id="map2" class="map"></div>
+    <div class="col-md-12">
+      <div id="map2" style="height: 800px;width: 100%;"></div>
     </div>
   </div>
 
-  <div class="row">
-    <div id="step3" class="step col-md-7" style="display: none;">
-      <h1> Create your game</h1>
-      <h2>Step 3:</h2>
-      <h4>Review game</h4>
+  <div id="step3" class="step row" style="display: none;">
+    <div class="col-md-7">
+      <h3> Create your game</h3>
+      <h3>Step 3: Review game</h3>
       <table id="cache-table">
         <thead>
           <tr>
@@ -44,11 +41,13 @@
         <tbody id="cache-table-body"></tbody>
       </table>
       <div>
-        <button id="finish-btn" onclick="finishGame()">Finish</button>    
+        <button id="finish-btn" onclick="finishGame()">Finish</button>
       </div>
-    </div> 
-    <div id="step3" class="step col-md-5">
-      <div id="map3" class="map"></div>
+    </div>
+    <div class="col-md-12">
+      <div id="map3" style="height: 800px;width: 100%;"></div>
     </div>
   </div>
+</div>
 {% endblock %}
+

@@ -1,101 +1,96 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h3>
-    Games Overview
-</h3>
+<h3>Games Overview</h3>
 
-<div id="accordion" class="accordion">
-    <div class="card">
-        <div class="card-header">
-            <a class="btn" data-bs-toggle="collapse" href="#collapseOne">
-                Ongoing Games
-            </a>
-        </div>
-        <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
-            <div class="card-body">
-                <table class="table" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th style="width:50%">Game</th>
-                            <th style="width:25%">Participate</th>
-                            <th style="width:25%">Supervise</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for game in gamesOn %}
-                        <tr>
-                            <td>{{ game.name }}</td>
-                            <td>
+<div class="accordion accordion-flush" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingOne">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Ongoing Games
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+            <table class="table" style="width:100%">
+                <thead>
+                    <tr>
+                        <th style="width:50%">Game</th>
+                        <th style="width:25%">Participate</th>
+                        <th style="width:25%">Supervise</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for game in gamesOn %}
+                    <tr>
+                        <td>{{ game.name }}</td>
+                        <td>
 
-                                {% if game["participate"] == 'yes' %}
-                                <form method="post" action="{{url_for('play_game')}}">
-                                    <input type="hidden" name="game_id" value="{{game._id}}">
-                                    <input type="submit" value="Play">
-                                </form>
-                                {% else %}
-                                <form method="post" action="{{url_for('join_game')}}">
-                                    <input type="hidden" name="game_id" value="{{game._id}}">
-                                    <input type="submit" value="Join">
-                                </form>
-                                {% endif %}
-
-                            </td>
-                            <td>
-                            {% if game["supervise"] == 'yes' %}
-                            <form method="post" action="{{url_for('supervise_game')}}">
+                            {% if game["participate"] == 'yes' %}
+                            <form method="post" action="{{url_for('play_game')}}">
                                 <input type="hidden" name="game_id" value="{{game._id}}">
-                                <input type="submit" value="Supervise">
+                                <input type="submit" value="Play" class="btn_submit theme-d2 hover-d1 hover-border-theme">
                             </form>
-
+                            {% else %}
+                            <form method="post" action="{{url_for('join_game')}}">
+                                <input type="hidden" name="game_id" value="{{game._id}}">
+                                <input type="submit" value="Join" class="btn_submit btn-secondary hover-d1 hover-border-theme">
+                            </form>
                             {% endif %}
 
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+                        </td>
+                        <td>
+                        {% if game["supervise"] == 'yes' %}
+                        <form method="post" action="{{url_for('supervise_game')}}">
+                            <input type="hidden" name="game_id" value="{{game._id}}">
+                            <input type="submit" value="Supervise" class="btn_submit btn-secondary hover-d1 hover-border-theme">
+                        </form>
 
+                        {% endif %}
+
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
+      </div>
     </div>
-    <div class="card">
-        <div class="card-header">
-            <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTwo">
-                Finished Games
-            </a>
+    <div class="accordion-item accordion-flush">
+      <h2 class="accordion-header" id="headingTwo">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            Finished Games
+        </button>
+      </h2>
+      <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width:50%">Game</th>
+                        <th style="width:25%">Winner</th>
+                        <th style="width:25%">Supervise</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for game in gamesOff %}
+                    <tr>
+                        <td>{{ game.name }}</td>
+                        <td>{{ game.winner }}</td>
+                        <td>
+                            {% if game["supervise"] == 'yes' %}
+                                <form method="post" action="{{url_for('supervise_game')}}">
+                                    <input type="hidden" name="game_id" value="{{game._id}}">
+                                    <input type="submit" value="Supervise">
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
-        <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
-            <div class="card-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th style="width:50%">Game</th>
-                            <th style="width:25%">Winner</th>
-                            <th style="width:25%">Supervise</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for game in gamesOff %}
-                        <tr>
-                            <td>{{ game.name }}</td>
-                            <td>{{ game.winner }}</td>
-                            <td>
-                                {% if game["supervise"] == 'yes' %}
-                                    <form method="post" action="{{url_for('supervise_game')}}">
-                                        <input type="hidden" name="game_id" value="{{game._id}}">
-                                        <input type="submit" value="Supervise">
-                                    </form>
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+      </div>
     </div>
-</div>
-
-
+  </div>
 {% endblock %}
