@@ -2,41 +2,46 @@
 
 {% block content %}
 
+<h2> Enjoy the game!</h2>
 
 <div class="row">
-   <div class="col-md-4">
-      <table class="table" style="width:100%">
-         <thead>
-            <tr>
-               <th style="width:50%">Hint</th>
-            </tr>
-         </thead>
-         <tbody>
-            {% for cache in cacheHints %}
-               <tr><td>{{cache}}</td></tr>
-            {% endfor %}
-         </tbody>
-      </table>
-   </div>
-   <div class="col-md-4">
-      <div class="form-group">
+   <div class="col">
+      <div class="form-group form-label">
          <form action="/upload-image" method="post" enctype="multipart/form-data">
-            <label for="cache-name">Cache Name:</label>
+            <label for="cache-name" style="margin-left: 15px; margin-top: 15px;">Cache Name:</label>
             <input type="text" id="cache-name" name="cache-name" placeholder="Enter cache name">
             <br>
-            <label for="cache-image">Upload Cache Image:</label>
-            <input type="file" id="cache-image" name="cache-image">
-            <input type="hidden" name="game_id" value="{{game._id}}">
             <br>
-            <input type="submit" value="Upload">
+            <label for="cache-image" style="margin-left: 15px;">Upload Cache Image:</label>
+            <input type="file" id="cache-image" name="cache-image" style="margin-left: 15px; margin-top: 15px;">
+            <input type="hidden" name="game_id" value="{{game._id}}">
+            <input type="submit" value="Upload" style="margin-left: 365px; margin-top: 35px;" class="btn_submit theme-d2 hover-d1 hover-border-theme">
          </form>
       </div>
    </div>
+
+   <div class="col">
+      <div class="card Cinfo">
+         <div class="card-header">
+             <a class="collapsed btn" data-bs-toggle="collapse">
+                 Hints!
+             </a>
+         </div>
+         <table class="table" style="width:100%">
+            <tbody>
+               {% for cache in cacheHints %}
+                  <tr><td>{{cache}}</td></tr>
+               {% endfor %}
+            </tbody>
+         </table>
+      </div>
+   </div>
 </div>
+
 <div class="row">
    <div class="col-md-12">
       <script>var localizacion = "{{localizacion}}"; var zoom = '{{game.zoom}}'; var marks = '{{cachesFound|tojson}}';var image_urls = '{{image_urls|tojson}}';</script>
-      <div id="mapaJuego" style="height: 400px;width: 100%;"></div>
+      <div id="mapaJuego" style="height: 450px;width: 100%; padding-left: 60px; padding-right: 60px; padding-top: 20px;"></div>
    </div>
 </div>
 <script src="static/mapaJuego.js"></script>

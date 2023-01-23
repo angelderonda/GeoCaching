@@ -230,7 +230,7 @@ def view_caches():
     game_id = request.form.get("game_id")
     google_id = request.form.get("user_id")
     imagenes = obtiene_urls(google_id,game_id)
-    return render_template('view_caches.html', image_urls=imagenes)
+    return render_template('view_caches.html', image_urls=imagenes, logged = True)
 # Get all corresponding urls
 def obtiene_urls(google_id,game_id):
     user_caches = (client["user_games"].find_one(filter={"user": google_id, "game": game_id}))["caches"]
