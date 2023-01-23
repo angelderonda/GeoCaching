@@ -7,7 +7,7 @@
 }
 
 body {
-  background-color:#f3f6fa
+  background-color:#aec3de
 }
 
 .container-fluid {
@@ -46,8 +46,6 @@ h6 {
   padding-right: 300px;
 }
 
-
-
 .form_game {
   padding-top: 20px;
   margin-left: auto;
@@ -77,10 +75,6 @@ h6 {
   padding: 5px;
 }
 
-
-
-
-
 h1,h2,h3,h4,h5,h6 {
   font-family: Roboto, sans-serif;
   padding-top: 3%;
@@ -96,7 +90,40 @@ h1,h2,h3,h4,h5,h6 {
   position: center;
 }
 
-.w3-theme-l5 {color:#000 !important; background-color:#f3f6fa !important}
+.button {
+  background-color: #4CAF50; /* Green /
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: flex;
+  font-size: 16px;
+  margin: 10px 100px;
+  -webkit-transition-duration: 0.4s; / Safari */
+  transition-duration: 0.4s;
+  font-family: roboto;
+  cursor: pointer;
+  width: 140px;
+  height: 58px;
+  border-radius: 7px;
+  font-weight: bold;
+  align-items: center;
+  justify-content: center;
+}
+
+.button2 {
+  background-color: #008CBA; 
+  color: white; 
+  border: 2px solid #48bee6;
+}
+
+.button2:hover {
+  background-color: white;
+  color: black;
+}
+
+.w3-theme-l5 {color:#0000 !important; background-color:#f3f6fa !important}
 .w3-theme-l4 {color:#000 !important; background-color:#d6e1ee !important}
 .w3-theme-l3 {color:#000 !important; background-color:#aec3de !important}
 .w3-theme-l2 {color:#fff !important; background-color:#85a5cd !important}
