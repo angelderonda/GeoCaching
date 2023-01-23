@@ -30,7 +30,6 @@ h6 {
 }
 
 .accordion {
-  position: relative;
   padding-left: 200px;
   padding-right: 200px;
 }
@@ -45,6 +44,7 @@ h6 {
   position: relative;
   width: 900px;
   margin-top: 15px;
+  margin-left: 90px;
 }
 
 .loginbtn {
@@ -94,11 +94,17 @@ h6 {
   padding: 5px;
 }
 
-h1,h2,h3,h4,h5,h6 {
+h2 {
   font-family: Roboto, sans-serif;
-  padding-top: 3%;
-  padding-bottom: 1%;
-  text-align: center;
+  padding-top: 70px;
+  padding-bottom: 20px;
+  padding-left: 60px;
+}
+
+h4 {
+  font-family: Roboto, sans-serif;
+  padding-bottom: 20px;
+  padding-left: 60px;
 }
 
 .map{
@@ -141,6 +147,32 @@ h1,h2,h3,h4,h5,h6 {
   align-items: center;
   justify-content: center;
   border-color: #305752;
+}
+
+.form-label{
+  padding-left: 60px;
+  padding-bottom: 10px;
+  padding-top: 20px;
+}
+
+.btn-next{
+  padding-left: 60px;
+}
+
+.Cinfo {
+  position: relative;
+  width: 80%;
+  margin-top: 15px;
+  margin-left: 58px;
+  text-align: center;
+}
+
+.Pinfo {
+  position: relative;
+  width: 80%;
+  margin-top: 15px;
+  margin-right: 60px;
+  text-align: center;
 }
 
 .button2 {

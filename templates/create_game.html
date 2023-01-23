@@ -1,37 +1,41 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
 <div id="game-creator">
   <div id="step1" class="step row">
     <div class="col-md-7">
-      <h3> Create your game</h3>
-      <h3>Step 1: Set game location and name</h3>
+      <h2> Create your game</h2>
+      <h4>Step 1: Set game location and name</h4>
       <label class="form-label">Game name:</label>
       <input type="text" id="game-name" required>
       <button id="next-btn-step1" disabled onclick="nextStep()">Next</button>
     </div>
     <div class="col-md-12">
-      <div id="map" style="height: 800px;width: 100%;"></div>
+      <div id="map" style="height: 450px;width: 100%; padding-left: 60px; padding-right: 60px; padding-top: 20px;"></div>
     </div>
   </div>
 
   <div id="step2" class="step row" style="display: none;">
     <div class="col-md-7">
-      <h3> Create your game</h3>
-      <h3>Step 2: Add caches</h3>
-      <p id="cache-count">Caches added: <span id="cache-count-num"></span>/10</p>
-      <button id="next-btn-step2" disabled onclick="nextStep()">Next</button>
+      <h2> Create your game</h2>
+      <h4>Step 2: Add caches</h4>
+      <p class="form-label" id="cache-count">Caches added: <span id="cache-count-num"></span>/10</p>
+      <div class="btn-next">
+        <button id="next-btn-step2" disabled onclick="nextStep()">Next</button>
+      </div>
     </div>
     <div class="col-md-12">
-      <div id="map2" style="height: 800px;width: 100%;"></div>
+      <div id="map2" style="height: 450px;width: 100%; padding-left: 60px; padding-right: 60px; padding-top: 20px;"></div>
     </div>
   </div>
 
   <div id="step3" class="step row" style="display: none;">
     <div class="col-md-7">
-      <h3> Create your game</h3>
-      <h3>Step 3: Review game</h3>
-      <table id="cache-table">
+      <h2> Create your game</h2>
+      <h4>Step 3: Review game</h4>
+      <div class="form-label">
+      <table id="cache-table" class="table table-striped">
         <thead>
           <tr>
             <th>Name</th>
@@ -44,8 +48,9 @@
         <button id="finish-btn" onclick="finishGame()">Finish</button>
       </div>
     </div>
+    </div>
     <div class="col-md-12">
-      <div id="map3" style="height: 800px;width: 100%;"></div>
+      <div id="map3" style="height: 450px;width: 100%; padding-left: 60px; padding-right: 60px; padding-top: 20px;"></div>
     </div>
   </div>
 </div>
