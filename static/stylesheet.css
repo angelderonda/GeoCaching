@@ -111,7 +111,7 @@ h1,h2,h3,h4,h5,h6 {
   text-decoration: none;
   display: flex;
   font-size: 16px;
-  margin: 10px 100px;
+  margin: 10px 375px;
   -webkit-transition-duration: 0.4s;
   transition-duration: 0.4s;
   font-family: roboto;
