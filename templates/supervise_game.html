@@ -2,95 +2,100 @@
 
 {% block content %}
 
-<h3> Supervise your game</h3>
-<div style="margin-left: 5%;">
-    <div id="game-creator">
-      <div id="step1" class="step">
-        <h3>Game:{{ game.name}}</h3>
-        {% if game.winner == '' %}
-            <h3>Game in progress...</h3>
-        {% else %}
-            <h3>Winner: {{game.winner}}</h3>
-        {% endif %}
-        <script>var center = '{{ game.location}}';var zoom = '{{game.zoom}}' ;var caches_list ='{{ game.caches|tojson}}' </script>
-        <div id="map_view" style="height: 400px;width: 400px;"></div>
-      </div>
+<h1> Supervise your game!</h1>
+
+<div class="row">
+    <div class="col">
+        <div id="map_view" class="map"></div>
     </div>
-</div>
-
-<form method="post" action="{{url_for('reset_game')}}">
-    <input type="hidden" name="game_id" value="{{game._id}}">
-    <input type="submit" value="Reset Game">
-</form>
 
 
+    <div class="col">
 
-<div id="accordion" class="accordion">
-
-    <div class="card">
-    <div class="card-header">
-        <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTwo">
-        Cache Information
-        </a>
-    </div>
-    <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
-        <div class="card-body">
-        <table class="table">
-            <thead>
-            <tr>
-                <th style="width:50%">Name</th>
-                <th style="width:25%">Hints</th>
-            </tr>
-            </thead>
-            <tbody>
-                {% for cache in game.caches %}
-                <tr>
-                    <td>{{ cache.name }}</td>
-                    <td>{{ cache.hint }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        <div class="row">
+            <div class="col">
+                <h3 style="margin-right: 120px;">Game: {{ game.name}}</h3>
+            </div>
+            <div class="col">
+                {% if game.winner == '' %}
+                <h3>Game in progress...</h3>
+                {% else %}
+                <h3>Winner: {{game.winner}}</h3>
+                {% endif %}
+                <script>var center = '{{ game.location}}'; var zoom = '{{game.zoom}}'; var caches_list = '{{ game.caches|tojson}}' </script>
+            </div>
         </div>
-    </div>
 
-    <div class="card">
-    <div class="card-header">
-        <a class="btn" data-bs-toggle="collapse" href="#collapseOne">
-        Players
-        </a>
-    </div>
-    <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
-        <div class="card-body">
-            <table class="table" style="width:100%">
-            <thead>
-                <tr>
-                <th style="width:50%">User Name</th>
-                <th style="width:25%"># Caches Found</th>
-                <th style="width:25%">View Caches</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for player in in_game %}
-                <tr>
-                    <td>{{ player.name }}</td>
-                    <td>
-                       {{player.cachesCount}}
-                    </td>
-                    <td>
-                        <form method="post" action="{{url_for('view_caches')}}">
-                            <input type="hidden" name="game_id" value="{{player.game}}">
-                            <input type="hidden" name="user_id" value="{{player.user}}">  
-                            <input type="submit" value="Caches">
-                        </form>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
+
+        <div class="card Cinfo">
+            <div class="card-header">
+                <a class="collapsed btn" data-bs-toggle="collapse">
+                    Cache Information
+                </a>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width:50%">Name</th>
+                        <th style="width:25%">Hints</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cache in game.caches %}
+                    <tr>
+                        <td>{{ cache.name }}</td>
+                        <td>{{ cache.hint }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
             </table>
         </div>
+
+        <div class="card Pinfo" >
+            <div class="card-header">
+                <a class="btn" data-bs-toggle="collapse">
+                    Players
+                </a>
+            </div>
+            <table class="table" style="width:100%">
+                <thead>
+                    <tr>
+                        <th style="width:50%">User Name</th>
+                        <th style="width:25%"># Caches Found</th>
+                        <th style="width:25%">View Caches</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player in in_game %}
+                    <tr>
+                        <td>{{ player.name }}</td>
+                        <td> {{player.cachesCount}}</td>
+                        <td>
+                            <form method="post" action="{{url_for('view_caches')}}">
+                                <input type="hidden" name="game_id" value="{{player.game}}">
+                                <input type="hidden" name="user_id" value="{{player.user}}">
+                                <input type="submit" value="Caches">
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+        <form method="post" action="{{url_for('reset_game')}}">
+            <input type="hidden" name="game_id" value="{{game._id}}">
+            <input type="submit" value="Reset Game" class="button button2">
+        </form>
     </div>
 </div>
+
+
+
+
+
+
 
 
 

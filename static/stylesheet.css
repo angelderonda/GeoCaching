@@ -28,6 +28,18 @@ h6 {
   padding-right: 250px;
 }
 
+.Cinfo {
+  position: relative;
+  width: 900px;
+  margin-top: 15px;
+}
+
+.Pinfo {
+  position: relative;
+  width: 900px;
+  margin-top: 15px;
+}
+
 .loginbtn {
   margin: 0px;
   position: absolute;
@@ -91,7 +103,7 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 .button {
-  background-color: #4CAF50; /* Green /
+  background-color: #4CAF50;
   border: none;
   color: white;
   padding: 16px 32px;
@@ -100,11 +112,11 @@ h1,h2,h3,h4,h5,h6 {
   display: flex;
   font-size: 16px;
   margin: 10px 100px;
-  -webkit-transition-duration: 0.4s; / Safari */
+  -webkit-transition-duration: 0.4s;
   transition-duration: 0.4s;
   font-family: roboto;
   cursor: pointer;
-  width: 140px;
+  width: 150px;
   height: 58px;
   border-radius: 7px;
   font-weight: bold;
